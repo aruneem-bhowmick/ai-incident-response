@@ -97,21 +97,32 @@ Project Warrant's thesis leans on:
   - Authors/Org: Coalition for Secure AI (CoSAI, an OASIS Open initiative), Workstream 2
     ("Preparing Defenders for a Changing Cybersecurity Landscape")
   - Date: Released November 18, 2025
-  - URL: https://www.coalitionforsecureai.org/coalition-for-secure-ai-releases-two-actionable-frameworks-for-ai-model-signing-and-incident-response/
-    (associated repo referenced as `cosai-oasis/ws2-defenders`; the specific raw-file path
-    could not be fetched directly, so treat only the announcement page as verified)
+  - URL: https://github.com/cosai-oasis/ws2-defenders/blob/main/incident-response/AI-Incident-Response.md
+    (raw file now confirmed fetchable directly; announcement page:
+    https://www.coalitionforsecureai.org/coalition-for-secure-ai-releases-two-actionable-frameworks-for-ai-model-signing-and-incident-response/)
   - Claim to cite: adapts the standard NIST incident-response lifecycle
     (Preparation → Detection/Analysis → Containment/Eradication/Recovery → Post-Incident)
     into AI-specific playbooks for threats like prompt injection, memory/context
     poisoning, model theft/extraction, and RAG poisoning, delivered as OASIS
-    CACAO-format workflows — the closest prior-art analogue to this whole sprint.
-  - Retention/evidence recommendation: no standalone itemized retention schedule. Under
-    "Preparation" it calls for AI-specific monitoring/logging capability — prompt logs,
-    model-inference activity logs, tool-execution logs, and memory-state-change logs —
-    and stresses that containment actions must preserve auditability and not corrupt
-    forensic artifacts. Evidence handling is otherwise folded into per-threat
-    detection/triage/containment/recovery playbooks rather than stated as one discrete
-    list.
+    CACAO-format workflows — the closest prior-art analogue to this whole sprint. It
+    explicitly scopes itself as *not* duplicating general infosec IR guidance, citing
+    NIST SP 800-61r3 for that, and focuses only on what's AI-specific.
+  - Retention/evidence recommendation (now confirmed from the full document, §3.3.3.1
+    "Forensics for AI Systems" plus its containment-phase evidence checklist — this
+    upgrades the framework from "no itemized schedule" to a real itemized one): the AI
+    system should record and be able to provide investigators the system prompt, user
+    prompt(s), and all other interaction parameters, plus the *raw model output* —
+    stated explicitly because AI systems are non-deterministic, so the actual output
+    must be preserved rather than assumed reproducible from inputs alone; a preserved
+    log trail of every external tool/function call the agent made, including MCP-server
+    interactions; and log trails of external components the agent touched (web-server
+    logs, DB query logs, etc.). Separately, its "Evidence Preservation" containment
+    checklist calls for forensic copies taken *before* containment actions, documented
+    containment actions themselves, vector-database state preservation, model-weight
+    copies, and chain-of-custody handling. It also flags, realistically, that finite
+    storage/compute means retention *objectives* should be set at design time rather
+    than assuming unlimited logging — directly comparable language to what the MRFM
+    diff will need.
 
 - **NIST SP 800-61r3 — Incident Response Recommendations and Considerations for
   Cybersecurity Risk Management: A CSF 2.0 Community Profile**
@@ -149,6 +160,12 @@ Project Warrant's thesis leans on:
     Treat this as a paraphrase of the control's evident purpose, not a confirmed
     requirement text — pull the actual AICM spreadsheet before relying on this for the
     MRFM diff.
+  - Flag (out of this sweep's scope, but worth surfacing): CSA's research-note team has
+    already published an analysis titled "The Benchmark That Broke Containment: An
+    OpenAI Evaluation Model Escaped Its Sandbox and Breached Hugging Face"
+    (labs.cloudsecurityalliance.org) — this reads as directly about the incident Project
+    Warrant is auditing, not just adjacent prior art. Cross-check against issue #1's
+    primary-source sweep.
 
 - **GovAI — Incident Analysis for AI Agents** (Ezell, Roberts-Gaal & Chan)
   - Authors/Org: Carson Ezell, Xavier Roberts-Gaal, Alan Chan (Centre for the Governance
