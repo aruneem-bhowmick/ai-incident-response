@@ -25,3 +25,6 @@ report/*.blg
 report/*.fls
 report/*.fdb_latexmk
 report/*.synctex.gz
+
+# Planning docs (internal, not for the public repo)
+planning/
