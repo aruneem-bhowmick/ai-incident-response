@@ -3,7 +3,7 @@
 **Project:** Project Warrant
 **Deliverable:** DL-2 — the frozen coding standard that `ledger/claims.csv` (DL-1) and all
 downstream metrics (`scripts/metrics.py`, M1–M4) are built against.
-**Version:** `v1.0 — frozen 2026-09-10`
+**Version:** `v1.1 — 2026-09-11`
 
 ---
 
@@ -75,7 +75,9 @@ single "channel" field.
 - **D1 — Opacity.** CoT is never logged, or is not disclosed to investigators.
   Ask: *is the claim still resolvable from the remaining channels?*
 - **D2 — Unfaithfulness.** CoT is logged but is not a reliable report of the computation
-  that produced the action. Ask: *is the claim's warrant defeated?*
+  that produced the action. Ask: *is the claim's warrant defeated?* **See §3.7 for how a
+  corroborating/fallback channel is allowed to count as rescuing a D2 verdict — it is not the
+  same test as D1/D3's.** (Added in `v1.1`, ADR `0001`, after a reliability failure — see §5.)
 - **D3 — Adversarial forgery.** Agent-writable channels (C1, C2, C3) may be forged, which
   the record documents as attempted and, in one technique, successful. Ask: *is the
   claim's warrant defeated?*
@@ -243,6 +245,47 @@ coder to write "N/A," and only one of them is legitimate:
 | A claim has no stated verification procedure | **V3** in the **verifiability** column, never `N/A` | Verifiability is a required column with an exhaustive code set; "uncheckable" is a value in that set, not a missing value. |
 | A claim's type, primary channel, or verifiability code feels unclear | The best-fitting code from the fixed set (falling back to `UNSTATED`/`C6`/`V3`/`T-` as the floor value), never a blank cell or `N/A` | Required columns must always carry a real code; ambiguity is resolved by a floor value, not by omission. |
 
+### 3.7 D2 corroboration must be independent of the self-report it's stress-testing (added `v1.1`, ADR `0001`)
+
+**Trigger:** Assigning a `d2_verdict` for a claim that has a corroborating or fallback channel
+available, where that channel either (a) repeats the same kind of agent-self-reported mental
+content (a stated reason, belief, or intent) rather than independently checking it, or (b) covers
+only a broader or narrower scope than the claim's specific stated assertion.
+
+**Why D2 needs its own rule here, unlike D1/D3:** D1 (opacity) is about whether content is
+*available* at all — a second channel carrying the same content genuinely makes it available.
+D3 (adversarial forgery) is about a discrete, effortful, one-off tampering act — a pattern
+repeating across many independent agent instances genuinely is harder to have coordinately
+forged (this is why several D3 notes in the ledger credit a wide, sampled recurrence as
+mitigating). D2 (unfaithfulness) is different: it asks whether a self-report *faithfully
+reflects the underlying computation*, and an unfaithful narration habit can be **systematic**
+— present every time that channel is used, not a one-off error. Repetition does not test for
+that the way it tests for availability (D1) or forgery-coordination difficulty (D3).
+
+**Rule:** A corroborating or fallback channel only rescues a D2 verdict toward `SURVIVES` to the
+extent it independently establishes the *same specific content* the CoT's unfaithfulness would
+put in doubt, from a source that is not itself just another self-report of the same
+reasoning/intent/belief. Two patterns do **not** count as independent rescue for D2 specifically
+(they may still be legitimate for D1/D3):
+
+1. **Self-report echo.** A second channel, a second agent instance, or an aggregate/sampled
+   population that merely repeats the same kind of agent-self-reported mental content does not
+   establish that any instance of it is faithful to computation.
+2. **Scope-mismatched fallback.** A named fallback that covers only a broader or narrower scope
+   than the claim's specific stated assertion (e.g., a completeness/exhaustiveness claim such as
+   "nothing was missed") does not rescue that specific assertion.
+
+Where a claim bundles a technical/behavioral sub-assertion that *is* independently corroborated
+by a genuinely non-self-report channel (C4 telemetry, C5 testimony, a C6 finding not itself
+derived from trusting the same self-report, or a distinct behavioral fact within an
+agent-writable channel — e.g. a raw action log entry, as opposed to the agent's own narrated
+reason for that action) together with a mental-content sub-assertion that is not, code the
+verdict against the claim's most specific stated content — identified via the §3.4 substitution
+test — not the softened gist. Where it is genuinely unclear whether a channel meets this test,
+resolve it the same way §3.1 resolves channel-primacy ties: default to the more skeptical
+verdict (`DEGRADED` over `SURVIVES`, `COLLAPSES` over `DEGRADED`), consistent with this
+codebook's stated bias toward surfacing fragile dependence rather than undercounting it.
+
 ---
 
 ## 4. Open questions (explicitly unresolved — do not silently pick an answer)
@@ -278,15 +321,27 @@ raise it for an ADR (§5) rather than deciding it silently.
 
 ## 5. Version and changelog policy
 
-**Version tag:** `v1.0 — frozen 2026-09-10`
+**Version tag:** `v1.1 — 2026-09-11`
 
-This codebook is frozen as of the version tag above. P0.3 (ledger-building) proceeds
-against this version without further judgment calls on taxonomy, subject only to the
+This codebook was frozen as `v1.0 — frozen 2026-09-10`. P0.3 (ledger-building) proceeded
+against that version without further judgment calls on taxonomy, subject only to the
 open questions logged in §4.
 
 **Changelog rule (R-07):** any change to this codebook after the freeze date — including
 adding, removing, or redefining a code; changing a rule in §3; or resolving an open
 question from §4 — must be logged as a dated entry in `/adr/`, not made as a silent edit
 to this file. Each such ADR entry should state: the date, the section/rule changed, the
-reason, and the version this codebook moves to as a result (e.g. `v1.1`). No ADR entries
-exist yet as of this freeze; `/adr/` is created by whichever task first needs it.
+reason, and the version this codebook moves to as a result (e.g. `v1.1`).
+
+**Changelog:**
+
+- **`v1.1 — 2026-09-11` (`adr/0001-d2-self-report-corroboration.md`).** P1.2's blind-recode
+  reliability check found Cohen's κ = 0.5690 on D2 (unfaithfulness) — below the 0.6 bar, while
+  D1 (0.7788) and D3 (0.7794) both passed. Diagnosis: §2.3's D2 definition let coders reuse
+  D1/D3's corroboration-counts-as-rescue reasoning, but D2's failure mode (unfaithfulness) can
+  be systematic in a way D1's (unavailability) and D3's (one-off forgery) are not, so the same
+  reasoning over-credits corroboration that doesn't actually establish faithfulness. Added
+  §3.7: a corroborating/fallback channel only rescues a D2 verdict if it is independent of the
+  self-report being stress-tested (not a same-type self-report echo) and matches the claim's
+  specific asserted scope. `ledger/claims.csv`'s `d2_verdict`/`d2_note` columns were recoded for
+  all 116 rows against this rule; `d1_*`/`d3_*` were left untouched.
