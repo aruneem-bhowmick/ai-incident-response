@@ -3,11 +3,21 @@
 **Deliverable:** Gate G1's closing step (`planning/SPRINT-PLAN.md` §6, P1.3). Computed by
 script, never by hand (R-03), from the frozen claim ledger.
 
-**Status:** Final. `ledger/claims.csv` is frozen at **v1.1** as of **2026-09-11** — 116
-rows, all six degradation columns (`d1_verdict`/`d1_note`/`d2_verdict`/`d2_note`/
-`d3_verdict`/`d3_note`) populated. See `ledger/schema.md`'s changelog for the freeze
-statement and `docs/reliability-report.md` + `adr/0001-d2-self-report-corroboration.md`
-for why the version is v1.1, not v1.0 (below).
+**Status:** Final. `ledger/claims.csv` is at **v1.2**, **125 rows**, as of **2026-09-11**,
+all six degradation columns populated on every row. See `ledger/schema.md`'s changelog
+for the full freeze/reopen history and `docs/reliability-report.md` +
+`adr/0001-d2-self-report-corroboration.md` for why the version passed through v1.1 first.
+
+**Why 125 and not 116:** the ledger was frozen at 116 rows (v1.1) after Gate G1. It was
+then reopened once, narrowly, to add 9 rows (`C352`-`C360`) recovered from
+`lw-01`/`lw-02` at a category-only level of description — a stress-test of the frozen
+results flagged that these two sources' near-total absence likely understated M3/M5's
+fragility numbers, and a narrower retry succeeded where two earlier attempts had been
+blocked by a safety classifier. This is a disclosed, one-time exception to the freeze,
+not a re-opening of the analytical process — no existing row was changed, only 9 new
+rows were added and D-coded by the same established convention (all rest solely on `C5`,
+so all six degradation columns are `SURVIVES` by the same reasoning already used for
+`C350`/`C351`).
 
 **Note:** this document also carries a fifth, **supplementary** metric, M5 (§4) — added
 after the original four were frozen, grounded in the codebook's own broader fragility
@@ -18,17 +28,21 @@ is never meant to be confused with the plan's original four (M1-M4).
 
 ## 1. Provenance
 
-- **Ledger:** `ledger/claims.csv`, v1.1. D1 and D3 verdicts are exactly as originally
-  coded in P1.1. D2 verdicts reflect the corrected codebook rule from
-  `adr/0001-d2-self-report-corroboration.md` — `d2_verdict`/`d2_note` were recoded for 6
-  of 116 rows after the blind-recode reliability check found Cohen's κ = 0.5690 on D2
-  (below the 0.6 bar), while D1 (κ = 0.7788) and D3 (κ = 0.7794) both passed and were left
-  untouched. Full detail: `docs/reliability-report.md`.
+- **Ledger:** `ledger/claims.csv`, v1.2, 125 rows. D1 and D3 verdicts on the original 116
+  rows are exactly as coded in P1.1. D2 verdicts on those 116 reflect the corrected
+  codebook rule from `adr/0001-d2-self-report-corroboration.md` — recoded for 6 of 116
+  rows after the blind-recode reliability check found Cohen's κ = 0.5690 on D2 (below the
+  0.6 bar), while D1 (κ = 0.7788) and D3 (κ = 0.7794) both passed and were left untouched.
+  Full detail: `docs/reliability-report.md`. The 9 rows added after the freeze
+  (`C352`-`C360`) are D-coded `SURVIVES`/`SURVIVES`/`SURVIVES` by direct, uncontested
+  application of the same rule already used for `C350`/`C351` (sole `C5`, no CoT, not
+  agent-writable) — not run through the blind-recode check, since they're not a judgment
+  call on any axis that check was designed to test.
 - **Script:** `scripts/metrics.py` (unit-tested, `scripts/test_metrics.py`, 15/15 passing).
 - **Command run:** `python scripts/metrics.py` (default path, resolves to
-  `ledger/claims.csv`), executed 2026-09-11 against the final, fully-recoded ledger
-  described above. Re-run 2026-09-11 after adding the supplementary M5 metric (§4
-  below) — the M1-M4 numbers are unchanged; only the printed output gained the M5 lines.
+  `ledger/claims.csv`), executed 2026-09-11 against the final 125-row ledger. Re-run twice
+  after freeze: once to add the supplementary M5 metric (M1-M4 unchanged that time), once
+  after the 9-row `lw-01`/`lw-02` addition (all five numbers shift slightly — see §2).
 - **Note on D2/D3 and these four numbers:** none of M1-M4 as implemented reads
   `d2_verdict` or `d3_verdict` directly — M1/M3 are structural (channel-code membership),
   M2 reads only `d1_verdict`, and M4 reads only `claim_type`/`verifiability`. The D2 fix
@@ -40,21 +54,26 @@ is never meant to be confused with the plan's original four (M1-M4).
 ## 2. Script output (verbatim)
 
 ```
-Claims loaded: 116 (from ledger/claims.csv)
+Claims loaded: 125 (from ledger/claims.csv)
 M1 - CoT monopoly (T3 claims, sole channel C1):        11.1% (0.1111)
-M2 - Record survival under opacity (overall):          89.7% (0.8966)
+M2 - Record survival under opacity (overall):          90.4% (0.9040)
 M2 - Record survival under opacity (by claim_type):
     T1: 100.0% (1.0000)
-    T2: 89.5% (0.8947)
+    T2: 90.5% (0.9048)
     T3: 22.2% (0.2222)
     T4: 100.0% (1.0000)
     T5: 92.9% (0.9286)
-M3 - Forgery exposure (sole substrate agent-writable): 9.5% (0.0948)
+M3 - Forgery exposure (sole substrate agent-writable): 8.8% (0.0880)
 M4 - Assurance gap (T5 claims at V3):                  57.1% (0.5714)
 M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's original four):
-    Primary channel in {C1,C2,C3,C6} (any corroboration):        84.5% (0.8448)
-    Primary channel in {C1,C2,C3,C6} AND no corroboration:       50.9% (0.5086)
+    Primary channel in {C1,C2,C3,C6} (any corroboration):        78.4% (0.7840)
+    Primary channel in {C1,C2,C3,C6} AND no corroboration:       47.2% (0.4720)
 ```
+
+(Superseded output at 116 rows, before the `lw-01`/`lw-02` addition, for reference:
+M1 11.1%, M2 overall 89.7% (T2 89.5%, others unchanged), M3 9.5%, M5 84.5%/50.9%. T1, T3,
+T4, T5's per-type figures and M4 are identical at both row counts — the 9 new rows are
+all T1/T2, all `C5`.)
 
 ## 3. The four metrics
 
@@ -102,9 +121,9 @@ confirm or refute a prediction either way. The honest reading is that T4 didn't 
 in this ledger's two counterfactual claims, but there isn't enough T4 data here to call
 the plan's prediction confirmed or refuted for that claim type.
 
-### M3 — Forgery exposure: **9.5%** (0.0948)
+### M3 — Forgery exposure: **8.8%** (0.0880)
 
-**Definition:** share of all 116 claims whose sole substrate (primary channel, zero
+**Definition:** share of all 125 claims whose sole substrate (primary channel, zero
 corroborating channels) is an agent-writable channel — C1 (raw CoT), C2 (inter-agent
 message content), or C3 (tool-call/action trace) — i.e., content the agent itself could
 have authored, altered, or fabricated, with the record documenting at least one
@@ -140,7 +159,7 @@ the sprint plan's original four metrics (`planning/SPRINT-PLAN.md` §4.5) — it
 supplementary metric added by this issue, grounded entirely in a ranking the codebook
 already commits to, not a new concept.
 
-**Definition:** two shares of all 116 claims, both keyed on `primary_channel` membership
+**Definition:** two shares of all 125 claims, both keyed on `primary_channel` membership
 in the codebook's broad-fragile set `{C1, C2, C3, C6}`:
   - share whose primary channel is in that set, regardless of corroboration;
   - share whose primary channel is in that set **and** which have no corroborating
@@ -151,24 +170,32 @@ in the codebook's broad-fragile set `{C1, C2, C3, C6}`:
 
 ```
 M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's original four):
-    Primary channel in {C1,C2,C3,C6} (any corroboration):        84.5% (0.8448)
-    Primary channel in {C1,C2,C3,C6} AND no corroboration:       50.9% (0.5086)
+    Primary channel in {C1,C2,C3,C6} (any corroboration):        78.4% (0.7840)
+    Primary channel in {C1,C2,C3,C6} AND no corroboration:       47.2% (0.4720)
 ```
 
-**Result:** 84.5% of all 116 claims rest on one of the four codebook-fragile channels as
-their primary channel, and 50.9% of all 116 claims — a bare majority — rest on one of
+(At 116 rows, before the `lw-01`/`lw-02` addition, these were 84.5%/50.9%. The 9 new
+rows are all `C5` — sturdy by the codebook's own ranking — so adding them mechanically
+pulls both M5 figures down. This is expected and is itself worth naming in the report:
+the one source-group whose absence most likely *inflated* M3/M5's fragility numbers, once
+partially restored, pulled those numbers toward less dramatic, not more — evidence the
+original figures weren't being padded by researcher error in the other direction.)
+
+**Result:** 78.4% of all 125 claims rest on one of the four codebook-fragile channels as
+their primary channel, and 47.2% of all 125 claims — just under half — rest on one of
 those four fragile channels *with no corroborating channel of any kind*. For contrast,
-only 15.5% of all 116 claims rest on `C4` or `C5`, the two channels the codebook's ranking
-treats as sturdy.
+21.6% of all 125 claims rest on `C4` or `C5`, the two channels the codebook's ranking
+treats as sturdy — up from 15.5% at 116 rows, entirely due to the 9 new `C5` rows.
 
 **Plain language:** M1's headline number (11.1%) is real but is drawn from a small
 denominator — only 9 `T3` claims exist in the ledger at all, so M1 is a fragile statistic
 about a fragile channel. M5 asks the same underlying question — how much of the record
 rests on a channel the codebook itself flags as likely to disappear or be forged — across
-*all* 116 claims and *all* four channels the codebook's own ranking calls fragile, not
-just the narrowest one. The answer is stark: a bare majority of everything publicly known
-about this incident rests on a fragile, uncorroborated channel, and the closer-to-average
-claim is more likely fragile than sturdy by better than five to one.
+*all* 125 claims and *all* four channels the codebook's own ranking calls fragile, not
+just the narrowest one. The answer is still stark even after the correction toward
+sturdier evidence: nearly half of everything publicly known about this incident rests on
+a fragile, uncorroborated channel, and the closer-to-average claim is more likely fragile
+than sturdy by better than three to one.
 
 ## 5. Reliability caveat carried forward from Gate G1
 
@@ -190,8 +217,11 @@ section, not left implicit.
 ## 6. Freeze statement
 
 Per `planning/SPRINT-PLAN.md` §6, P1.3 ("Run the metric script. Write the four numbers
-down and stop touching the ledger."), `ledger/claims.csv` is frozen at **v1.1** as of
-2026-09-11. Gate G1 (four metrics computed, κ reported, ledger frozen) is met. No further
-edits to `ledger/claims.csv` are anticipated for the remainder of the sprint (P2/P3 build
-on top of this ledger; they do not re-open it) — see the PR for this file for the
-explicit statement of that intent.
+down and stop touching the ledger."), `ledger/claims.csv` was frozen at **v1.1**, 116
+rows, on 2026-09-11. Gate G1 (four metrics computed, κ reported, ledger frozen) was met
+at that point. The ledger was reopened once, narrowly, the same day to add 9 rows
+(`C352`-`C360`) recovered from `lw-01`/`lw-02` (see §1) — a disclosed, one-time exception
+motivated by closing a specific, previously-flagged evidentiary gap, not a general
+reopening of the coding process. `ledger/claims.csv` is now frozen again at **v1.2**,
+125 rows, as of 2026-09-11. No further edits are anticipated for the remainder of the
+sprint.

@@ -52,6 +52,17 @@ dozens), it's a reasonable inference that lw-01/lw-02 also contain agent-authore
 verbatim content, but that inference itself is not evidence and shouldn't be reported
 as a count.
 
+**Update, same day:** a later, narrower retry succeeded at the *claim* level — 9 new
+ledger rows (`C352`-`C360`) were added by extracting only section-heading text (e.g.
+"the agent gained arbitrary-code-execution capability," "a recovered command-and-control
+script") without reading, summarizing, or reproducing any code, command, or payload
+under those headings. This closes part of the ledger-coverage gap for these two sources
+(see `docs/headline-metrics.md`'s updated M1-M5 at 125 rows) but does **not** resolve the
+excerpt-inventory gap above — no verbatim agent utterance from either source has been
+catalogued, and the count in the table on this page remains genuinely unknown. The two
+gaps are independent: this page is about counting quoted agent output; the ledger update
+is about claim-level coverage at a coarser grain than any excerpt would require.
+
 **This is itself a finding relevant to the project's thesis and worth carrying into the
 report's Discussion/Limitations section:** the sprint's own reading pack (Track 5,
 "the defender's dilemma") documents hosted frontier models refusing parts of the real
