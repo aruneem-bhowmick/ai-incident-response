@@ -6,6 +6,21 @@ raw diff summary.
 
 ## 2026-09-11
 
+### Direct commits `db875f2`, `ac7f2d9` — Re-freeze the ledger at v1.2 after the lw-01/lw-02 addition
+Merging the lw-retry PR below required follow-up: D-coded the 9 new rows (all trivially `SURVIVES` on D1-D3, since all rest solely on `C5`), refreshed M1-M5 for the new 125-row ledger (M3 and M5 both moved slightly toward *less* dramatic — evidence the original numbers weren't inflated by omission), updated the freeze statement in `docs/headline-metrics.md` and `ledger/schema.md`'s changelog to record the ledger passed through v1.1 (116 rows) before settling at v1.2 (125 rows), and refreshed the numbers quoted in the title-candidates doc to match.
+
+### PR [#48](https://github.com/aruneem-bhowmick/ai-incident-response/pull/48) — Retry lw-01/lw-02 with a narrow, category-only pass (closes [#43](https://github.com/aruneem-bhowmick/ai-incident-response/issues/43))
+A stress-test of the frozen P1 ledger flagged that these two sources' near-total absence (only 2 hand-coded rows out of 116) most plausibly made the forgery-exposure metrics look more fragile than reality, since they're specifically the record's technical/mechanism evidence. Two prior attempts to process them in any detail had been blocked by a cybersecurity-content safety classifier. This retry succeeded by extracting only section-heading text — never reading, quoting, or summarizing any code, command, or payload underneath — adding 9 new claim-level rows without tripping the classifier at all.
+
+### PR [#47](https://github.com/aruneem-bhowmick/ai-incident-response/pull/47) — Add a supplementary codebook-fragility metric (M5) to metrics.py (closes [#42](https://github.com/aruneem-bhowmick/ai-incident-response/issues/42))
+The project's four official metrics only treat raw chain-of-thought (M1) or agent-writable channels (M3) as "fragile." But the codebook's own fragility ranking already places lab assertions with no stated substrate (`C6`) above two channels it calls sturdy. Using that broader, already-defined fragile set instead of inventing a new one found a far more statistically robust version of the project's core finding: originally 84.5% of all 116 claims (later 78.4% of 125, after the lw-retry above) rest on a fragile primary channel — a much better-powered number than M1's fragile 11.1% (drawn from only 9 claims).
+
+### PR [#46](https://github.com/aruneem-bhowmick/ai-incident-response/pull/46) — Add small-sample-size caveats to headline metrics (closes [#41](https://github.com/aruneem-bhowmick/ai-incident-response/issues/41))
+`docs/headline-metrics.md` was quietly overclaiming on two numbers: M1's 11.1% is 1 of only 9 `T3` claims (a single row swings it ~11 points), and the M2 table's "T4 survives at 100%" was 2 of 2 claims, presented as if it meaningfully confirmed or contradicted the sprint plan's own prediction. Neither claim was false, but neither was disclosed as fragile. Both now state their denominators plainly.
+
+### PR [#44](https://github.com/aruneem-bhowmick/ai-incident-response/pull/44) — Draft working-title candidates for the report
+The sprint plan's own working title ("Warranted by One Channel...") would overclaim once M1/M2 were in hand — the record survives CoT opacity at ~90% overall, so a title implying broad collapse doesn't match the data. Three candidates drafted with an explicit tradeoff (a dramatic-but-n=9 framing vs. a less viscerally specific but n=125-powered framing), left open for a P3 decision rather than picked here.
+
 ### Direct commit `16ece7a` and PR [#40](https://github.com/aruneem-bhowmick/ai-incident-response/pull/40) — Freeze the ledger at v1.1 and record headline metrics (closes [#30](https://github.com/aruneem-bhowmick/ai-incident-response/issues/30), [#19](https://github.com/aruneem-bhowmick/ai-incident-response/issues/19))
 Gate G1 met. Final M1-M4 recorded in `docs/headline-metrics.md`: M1 (CoT monopoly) 11.1%, M2 (record survival under opacity) 89.7% overall — but split by claim type, T1 and T4 survive at 100% while T3 (intent) collapses to 22.2%, confirming half of the plan's own prediction and contradicting the other half (T4 was predicted not to survive). M3 (forgery exposure) 9.5%, M4 (assurance gap) 57.1%. Per the plan's own instruction, no further edits to the ledger from here — this closes out the whole P1 phase.
 
