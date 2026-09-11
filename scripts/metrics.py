@@ -1,4 +1,5 @@
-"""Compute Project Warrant's four headline metrics (M1-M4) from the claim ledger.
+"""Compute Project Warrant's four headline metrics (M1-M4), plus the
+supplementary M5 metric, from the claim ledger.
 
 Per R-03, headline metrics must be computed by script, never by hand. This
 module is that script. It reads `/ledger/claims.csv` (schema documented in
@@ -19,11 +20,22 @@ module is that script. It reads `/ledger/claims.csv` (schema documented in
     M4 - Assurance gap.
         Share of T5 claims at verifiability == V3.
 
+    M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's
+    original four metrics).
+        Uses the codebook's own broader fragility ranking from
+        `/docs/codebook.md` §3.1 (C1 > C2 > C3 > C6 > C5 > C4, most fragile
+        to least) rather than the narrower agent-writable-only set M1/M3
+        use. Reports two shares of all 116 claims:
+          (a) primary_channel in {C1, C2, C3, C6}, regardless of
+              corroboration;
+          (b) primary_channel in {C1, C2, C3, C6} AND no corroborating
+              channel at all.
+
 The controlled vocabularies for `claim_type`, channel codes, and `verifiability`
 are defined authoritatively in `/docs/codebook.md`; this script only needs to
 know the specific codes referenced directly in the metric definitions above
-(T3, T5, C1, C2, C3, V3), which are given in the sprint plan and reproduced
-here as constants.
+(T3, T5, C1, C2, C3, C6, V3), which are given in the sprint plan and codebook
+and reproduced here as constants.
 
 Usage:
     python scripts/metrics.py [path/to/claims.csv]
@@ -47,6 +59,13 @@ from typing import Iterable, Optional
 # (M3). C1 is additionally the specific channel checked by the CoT-monopoly
 # metric (M1).
 AGENT_WRITABLE_CHANNELS = {"C1", "C2", "C3"}
+
+# Channel codes treated as "fragile" under the codebook's own broader
+# fragility ranking (`docs/codebook.md` §3.1: C1 > C2 > C3 > C6 > C5 > C4,
+# most fragile to least). This is the set used by the supplementary M5
+# metric -- it additionally includes C6 (lab assertion with no stated
+# substrate), which M1/M3 as originally scoped do not count.
+BROAD_FRAGILE_CHANNELS = {"C1", "C2", "C3", "C6"}
 
 COT_CHANNEL = "C1"
 COT_MONOPOLY_CLAIM_TYPE = "T3"
@@ -151,10 +170,46 @@ def compute_m4_assurance_gap(rows: Iterable[dict]) -> Optional[float]:
     return _safe_ratio(numerator, len(t5_rows))
 
 
+def compute_m5_broad_fragility(
+    rows: Iterable[dict],
+) -> tuple[Optional[float], Optional[float]]:
+    """M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's
+    original four metrics).
+
+    Uses the codebook's own broader fragility ranking (`docs/codebook.md`
+    §3.1: C1 > C2 > C3 > C6 > C5 > C4) rather than the narrower
+    agent-writable-only set M1/M3 use (C1/C2/C3). Returns a pair:
+
+        (share_fragile, share_fragile_and_uncorroborated)
+
+    where `share_fragile` is the share of all claims whose primary_channel
+    is in {C1, C2, C3, C6} regardless of corroboration, and
+    `share_fragile_and_uncorroborated` is the share of all claims whose
+    primary_channel is in {C1, C2, C3, C6} AND has no corroborating channel
+    at all.
+    """
+    rows = list(rows)
+    fragile_numerator = sum(
+        1 for r in rows if r.get("primary_channel") in BROAD_FRAGILE_CHANNELS
+    )
+    fragile_uncorroborated_numerator = sum(
+        1
+        for r in rows
+        if r.get("primary_channel") in BROAD_FRAGILE_CHANNELS and has_no_corroboration(r)
+    )
+    denominator = len(rows)
+    return (
+        _safe_ratio(fragile_numerator, denominator),
+        _safe_ratio(fragile_uncorroborated_numerator, denominator),
+    )
+
+
 def compute_all(rows: Iterable[dict]) -> dict:
-    """Compute all four headline metrics and return them in one dict."""
+    """Compute all four headline metrics and the supplementary M5 metric,
+    returning them all in one dict."""
     rows = list(rows)
     m2_overall, m2_by_type = compute_m2_record_survival(rows)
+    m5_fragile, m5_fragile_uncorroborated = compute_m5_broad_fragility(rows)
     return {
         "n_claims": len(rows),
         "M1_cot_monopoly": compute_m1_cot_monopoly(rows),
@@ -162,6 +217,8 @@ def compute_all(rows: Iterable[dict]) -> dict:
         "M2_record_survival_by_claim_type": m2_by_type,
         "M3_forgery_exposure": compute_m3_forgery_exposure(rows),
         "M4_assurance_gap": compute_m4_assurance_gap(rows),
+        "M5_broad_fragility": m5_fragile,
+        "M5_broad_fragility_uncorroborated": m5_fragile_uncorroborated,
     }
 
 
@@ -199,6 +256,9 @@ def main(argv: list[str]) -> int:
         print(f"    {claim_type}: {_fmt(value)}")
     print(f"M3 - Forgery exposure (sole substrate agent-writable): {_fmt(metrics['M3_forgery_exposure'])}")
     print(f"M4 - Assurance gap (T5 claims at V3):                  {_fmt(metrics['M4_assurance_gap'])}")
+    print("M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's original four):")
+    print(f"    Primary channel in {{C1,C2,C3,C6}} (any corroboration):        {_fmt(metrics['M5_broad_fragility'])}")
+    print(f"    Primary channel in {{C1,C2,C3,C6}} AND no corroboration:       {_fmt(metrics['M5_broad_fragility_uncorroborated'])}")
     return 0
 
 
