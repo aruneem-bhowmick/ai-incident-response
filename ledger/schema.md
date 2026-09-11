@@ -45,3 +45,16 @@ frozen.
   `claim_type`/`verifiability` slice, `scripts/metrics.py` reports the
   corresponding metric as unavailable for that slice rather than dividing by
   zero.
+
+## Changelog
+
+- **v1.1 frozen, 2026-09-11.** `/ledger/claims.csv` is frozen at v1.1 (116 rows, all
+  six degradation columns populated) — see `/docs/reliability-report.md` for the κ
+  reliability gate (D1 0.7788, D2 0.5690 pre-fix, D3 0.7794) and
+  `/docs/headline-metrics.md` for the final M1-M4 numbers computed from this frozen
+  ledger. Versioned v1.1, not v1.0, because D2 (unfaithfulness)'s κ fell below the 0.6
+  bar, triggering a codebook rule fix and a full recode of the ledger's
+  `d2_verdict`/`d2_note` columns against the corrected rule — see
+  `/adr/0001-d2-self-report-corroboration.md` and `/docs/codebook.md`'s own changelog
+  for the rule change itself. Per `planning/SPRINT-PLAN.md` §6 P1.3, no further edits
+  to `/ledger/claims.csv` are made after this point.
