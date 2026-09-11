@@ -58,3 +58,13 @@ frozen.
   `/adr/0001-d2-self-report-corroboration.md` and `/docs/codebook.md`'s own changelog
   for the rule change itself. Per `planning/SPRINT-PLAN.md` §6 P1.3, no further edits
   to `/ledger/claims.csv` are made after this point.
+- **v1.2, 2026-09-11 (same day).** One disclosed, narrow exception to the v1.1 freeze:
+  added 9 rows (`C352`-`C360`) from `lw-01`/`lw-02` at a category-only level of
+  description, after a stress-test of the frozen ledger flagged that these two
+  sources' near-total absence likely understated M3/M5's fragility numbers. All 9
+  rest solely on `C5` with no corroboration, so all six degradation columns were coded
+  `SURVIVES`/`SURVIVES`/`SURVIVES` by direct application of the existing rule used for
+  `C350`/`C351` — no blind-recode check was re-run, since this isn't a judgment call on
+  any axis that check tests. No existing row was modified. See
+  `/docs/headline-metrics.md` for the refreshed M1-M5 numbers at 125 rows. No further
+  edits to `/ledger/claims.csv` are anticipated for the remainder of the sprint.
