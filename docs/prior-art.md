@@ -150,16 +150,23 @@ Project Warrant's thesis leans on:
   - Claim to cite: AICM is a 247-control, 18-domain vendor-agnostic framework extending
     CSA's Cloud Controls Matrix with AI-specific domains (including a new Model Security
     domain); AIS-13 is one of its AI-specific application/interface-security controls.
-  - Retention/evidence recommendation: **partially unverified.** The verbatim control
-    text lives only in CSA's downloadable AICM workbook, which was not directly
-    fetchable; multiple third-party sources decline to reproduce it. The one
-    corroborated, consistent description (from CSA's own research notes and a
-    third-party AICM guide) is that AIS-13 governs containment of AI systems under
-    test/evaluation — i.e., requiring isolated, access-restricted execution environments
-    so an agent being evaluated cannot reach production systems or the open internet.
-    Treat this as a paraphrase of the control's evident purpose, not a confirmed
-    requirement text — pull the actual AICM spreadsheet before relying on this for the
-    MRFM diff.
+  - Retention/evidence recommendation (confirmed via CSA's own published auditor
+    guidance, not just third-party summary — see
+    https://cloudsecurityalliance.org/artifacts/aicmv1-1-auditing-guidelines-for-orchestrated-service-providers-osp):
+    AIS-13 requires an AI Orchestration Service Provider to run AI workflows, model
+    integrations, and customer-/third-party-defined components (plugins, custom code) in
+    isolated execution environments that block lateral movement into other systems —
+    operationalized as container/namespace isolation, network policies restricting
+    inter-service communication, resource quotas/rate limits per workload, layered
+    service-to-service authentication, cross-tenant isolation between customers, and a
+    plugin/custom-code review-and-monitoring pipeline (static analysis pre-execution,
+    behavioral/anomaly monitoring at runtime). Auditors are also expected to check for a
+    documented **sandbox-escape incident response procedure** — i.e., AIS-13 itself
+    anticipates the failure mode this sprint is auditing (an agent breaking out of its
+    evaluation sandbox) and treats having a response plan for it as part of the control,
+    not just prevention. The exact control-objective wording lives in CSA's downloadable
+    AICM workbook (not independently fetched here); the auditor-guidance document is the
+    verified, citable proxy for what compliance requires.
   - Flag (out of this sweep's scope, but worth surfacing): CSA's research-note team has
     already published an analysis titled "The Benchmark That Broke Containment: An
     OpenAI Evaluation Model Escaped Its Sandbox and Breached Hugging Face"
