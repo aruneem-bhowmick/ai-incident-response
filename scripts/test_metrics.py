@@ -1,6 +1,6 @@
 """Unit tests for scripts/metrics.py.
 
-Runs against a self-contained, hand-constructed 5-row fixture -- NOT the real
+Runs against a self-contained, hand-constructed 6-row fixture -- NOT the real
 `/ledger/claims.csv`, which will most likely not exist yet or be incomplete at
 the time these tests are run. The fixture is written out to a temporary CSV so
 the tests also exercise the real CSV-reading path (`read_claims`), not just
@@ -71,19 +71,24 @@ def _dummy_row(**overrides) -> dict:
     return row
 
 
-# Five hand-constructed dummy rows covering (at least once each):
+# Six hand-constructed dummy rows covering (at least once each):
 #   1. a T3 claim whose sole channel is C1              -> counts toward M1
 #   2. a claim that SURVIVES D1
 #   3. a claim that COLLAPSES under D1
 #   4. a claim on an agent-writable-only channel         -> counts toward M3
 #   5. a T5 claim at V3                                  -> counts toward M4
+#   6. a claim whose sole channel is C6                  -> counts toward M5
+#                                                            but not M1/M3
 #
 # Expected metrics on this fixture (worked by hand, asserted below):
-#   M1 (T3, sole channel C1)            = 1/2 = 0.5   (C001 yes, C002 no -- corroborated)
-#   M2 overall (SURVIVES under D1)      = 3/5 = 0.6   (C001, C003, C005 survive)
-#   M2 by claim_type                    = {T1: 1.0, T3: 0.5, T5: 0.5}
-#   M3 (sole substrate agent-writable)  = 2/5 = 0.4   (C001 via C1, C004 via C3)
-#   M4 (T5 claims at V3)                = 1/2 = 0.5   (C004 no, C005 yes)
+#   M1 (T3, sole channel C1)             = 1/2 = 0.5   (C001 yes, C002 no -- corroborated)
+#   M2 overall (SURVIVES under D1)       = 3/6 = 0.5   (C001, C003, C005 survive)
+#   M2 by claim_type                     = {T1: 1.0, T3: 0.5, T5: 0.5, T2: 0.0}
+#   M3 (sole substrate agent-writable)   = 2/6 = 0.3333 (C001 via C1, C004 via C3)
+#   M4 (T5 claims at V3)                 = 1/2 = 0.5   (C004 no, C005 yes)
+#   M5 fragile share ({C1,C2,C3,C6})     = 4/6 = 0.6667 (C001, C002, C004, C006)
+#   M5 fragile & uncorroborated          = 3/6 = 0.5   (C001, C004, C006 -- C002 is
+#                                                        corroborated so excluded)
 FIXTURE_ROWS = [
     _dummy_row(
         claim_id="C001",
@@ -125,6 +130,14 @@ FIXTURE_ROWS = [
         verifiability="V3",
         d1_verdict="SURVIVES",
     ),
+    _dummy_row(
+        claim_id="C006",
+        claim_type="T2",
+        primary_channel="C6",
+        corroborating_channels="",
+        verifiability="V3",
+        d1_verdict="COLLAPSES",
+    ),
 ]
 
 
@@ -149,36 +162,44 @@ class MetricsFixtureTests(unittest.TestCase):
     def tearDownClass(cls) -> None:
         cls._tmpdir.cleanup()
 
-    def test_fixture_loads_all_five_rows(self) -> None:
-        self.assertEqual(len(self.rows), 5)
+    def test_fixture_loads_all_six_rows(self) -> None:
+        self.assertEqual(len(self.rows), 6)
 
     def test_m1_cot_monopoly(self) -> None:
         self.assertAlmostEqual(metrics.compute_m1_cot_monopoly(self.rows), 0.5)
 
     def test_m2_record_survival_overall(self) -> None:
         overall, _ = metrics.compute_m2_record_survival(self.rows)
-        self.assertAlmostEqual(overall, 0.6)
+        self.assertAlmostEqual(overall, 0.5)
 
     def test_m2_record_survival_by_claim_type(self) -> None:
         _, by_type = metrics.compute_m2_record_survival(self.rows)
         self.assertAlmostEqual(by_type["T1"], 1.0)
+        self.assertAlmostEqual(by_type["T2"], 0.0)
         self.assertAlmostEqual(by_type["T3"], 0.5)
         self.assertAlmostEqual(by_type["T5"], 0.5)
-        self.assertEqual(set(by_type.keys()), {"T1", "T3", "T5"})
+        self.assertEqual(set(by_type.keys()), {"T1", "T2", "T3", "T5"})
 
     def test_m3_forgery_exposure(self) -> None:
-        self.assertAlmostEqual(metrics.compute_m3_forgery_exposure(self.rows), 0.4)
+        self.assertAlmostEqual(metrics.compute_m3_forgery_exposure(self.rows), 1 / 3)
 
     def test_m4_assurance_gap(self) -> None:
         self.assertAlmostEqual(metrics.compute_m4_assurance_gap(self.rows), 0.5)
 
+    def test_m5_broad_fragility(self) -> None:
+        fragile, fragile_uncorroborated = metrics.compute_m5_broad_fragility(self.rows)
+        self.assertAlmostEqual(fragile, 2 / 3)
+        self.assertAlmostEqual(fragile_uncorroborated, 0.5)
+
     def test_compute_all_matches_individual_metrics(self) -> None:
         result = metrics.compute_all(self.rows)
-        self.assertEqual(result["n_claims"], 5)
+        self.assertEqual(result["n_claims"], 6)
         self.assertAlmostEqual(result["M1_cot_monopoly"], 0.5)
-        self.assertAlmostEqual(result["M2_record_survival_overall"], 0.6)
-        self.assertAlmostEqual(result["M3_forgery_exposure"], 0.4)
+        self.assertAlmostEqual(result["M2_record_survival_overall"], 0.5)
+        self.assertAlmostEqual(result["M3_forgery_exposure"], 1 / 3)
         self.assertAlmostEqual(result["M4_assurance_gap"], 0.5)
+        self.assertAlmostEqual(result["M5_broad_fragility"], 2 / 3)
+        self.assertAlmostEqual(result["M5_broad_fragility_uncorroborated"], 0.5)
 
 
 class ChannelParsingTests(unittest.TestCase):
@@ -225,6 +246,11 @@ class EmptyLedgerTests(unittest.TestCase):
         self.assertEqual(by_type, {})
         self.assertIsNone(metrics.compute_m3_forgery_exposure(empty_rows))
         self.assertIsNone(metrics.compute_m4_assurance_gap(empty_rows))
+        m5_fragile, m5_fragile_uncorroborated = metrics.compute_m5_broad_fragility(
+            empty_rows
+        )
+        self.assertIsNone(m5_fragile)
+        self.assertIsNone(m5_fragile_uncorroborated)
 
 
 if __name__ == "__main__":

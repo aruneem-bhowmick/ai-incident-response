@@ -9,6 +9,11 @@ rows, all six degradation columns (`d1_verdict`/`d1_note`/`d2_verdict`/`d2_note`
 statement and `docs/reliability-report.md` + `adr/0001-d2-self-report-corroboration.md`
 for why the version is v1.1, not v1.0 (below).
 
+**Note:** this document also carries a fifth, **supplementary** metric, M5 (§4) — added
+after the original four were frozen, grounded in the codebook's own broader fragility
+ranking rather than a new concept. M5 does not touch or re-open the frozen ledger, and it
+is never meant to be confused with the plan's original four (M1-M4).
+
 ---
 
 ## 1. Provenance
@@ -19,10 +24,11 @@ for why the version is v1.1, not v1.0 (below).
   of 116 rows after the blind-recode reliability check found Cohen's κ = 0.5690 on D2
   (below the 0.6 bar), while D1 (κ = 0.7788) and D3 (κ = 0.7794) both passed and were left
   untouched. Full detail: `docs/reliability-report.md`.
-- **Script:** `scripts/metrics.py` (unit-tested, `scripts/test_metrics.py`, 14/14 passing).
+- **Script:** `scripts/metrics.py` (unit-tested, `scripts/test_metrics.py`, 15/15 passing).
 - **Command run:** `python scripts/metrics.py` (default path, resolves to
   `ledger/claims.csv`), executed 2026-09-11 against the final, fully-recoded ledger
-  described above.
+  described above. Re-run 2026-09-11 after adding the supplementary M5 metric (§4
+  below) — the M1-M4 numbers are unchanged; only the printed output gained the M5 lines.
 - **Note on D2/D3 and these four numbers:** none of M1-M4 as implemented reads
   `d2_verdict` or `d3_verdict` directly — M1/M3 are structural (channel-code membership),
   M2 reads only `d1_verdict`, and M4 reads only `claim_type`/`verifiability`. The D2 fix
@@ -45,6 +51,9 @@ M2 - Record survival under opacity (by claim_type):
     T5: 92.9% (0.9286)
 M3 - Forgery exposure (sole substrate agent-writable): 9.5% (0.0948)
 M4 - Assurance gap (T5 claims at V3):                  57.1% (0.5714)
+M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's original four):
+    Primary channel in {C1,C2,C3,C6} (any corroboration):        84.5% (0.8448)
+    Primary channel in {C1,C2,C3,C6} AND no corroboration:       50.9% (0.5086)
 ```
 
 ## 3. The four metrics
@@ -117,7 +126,51 @@ outside the investigating institution — these are the specific claims where th
 is simply being asked to trust the lab's own word, with no stated way for an outside
 party to verify it.
 
-## 4. Reliability caveat carried forward from Gate G1
+## 4. M5 — Broad channel fragility (SUPPLEMENTARY, not one of the plan's original four)
+
+**Why this exists:** `docs/codebook.md` §3.1 already defines a fragility ranking across
+*all six* channel codes — `C1 > C2 > C3 > C6 > C5 > C4` (most fragile to least) — for its
+own internal tie-breaking rule. M1 and M3 only treat `C1` (M1) or `C1`/`C2`/`C3` (M3, the
+"agent-writable" channels) as fragile; neither counts `C6` (lab assertion with no stated
+substrate), even though the codebook's own ranking places `C6` above both `C5` and `C4`
+as more fragile. A stress-test of the frozen ledger found that using the codebook's
+already-defined, broader fragile set (`C1`/`C2`/`C3`/`C6`) instead produces a far more
+statistically robust finding than M1, which rests on only 9 `T3` claims. M5 is not one of
+the sprint plan's original four metrics (`planning/SPRINT-PLAN.md` §4.5) — it is a
+supplementary metric added by this issue, grounded entirely in a ranking the codebook
+already commits to, not a new concept.
+
+**Definition:** two shares of all 116 claims, both keyed on `primary_channel` membership
+in the codebook's broad-fragile set `{C1, C2, C3, C6}`:
+  - share whose primary channel is in that set, regardless of corroboration;
+  - share whose primary channel is in that set **and** which have no corroborating
+    channel at all (same blank/`NONE`/`N/A`/`NA` convention `has_no_corroboration` already
+    uses for M3).
+
+**Script output:**
+
+```
+M5 - Broad channel fragility (SUPPLEMENTARY, not one of the plan's original four):
+    Primary channel in {C1,C2,C3,C6} (any corroboration):        84.5% (0.8448)
+    Primary channel in {C1,C2,C3,C6} AND no corroboration:       50.9% (0.5086)
+```
+
+**Result:** 84.5% of all 116 claims rest on one of the four codebook-fragile channels as
+their primary channel, and 50.9% of all 116 claims — a bare majority — rest on one of
+those four fragile channels *with no corroborating channel of any kind*. For contrast,
+only 15.5% of all 116 claims rest on `C4` or `C5`, the two channels the codebook's ranking
+treats as sturdy.
+
+**Plain language:** M1's headline number (11.1%) is real but is drawn from a small
+denominator — only 9 `T3` claims exist in the ledger at all, so M1 is a fragile statistic
+about a fragile channel. M5 asks the same underlying question — how much of the record
+rests on a channel the codebook itself flags as likely to disappear or be forged — across
+*all* 116 claims and *all* four channels the codebook's own ranking calls fragile, not
+just the narrowest one. The answer is stark: a bare majority of everything publicly known
+about this incident rests on a fragile, uncorroborated channel, and the closer-to-average
+claim is more likely fragile than sturdy by better than five to one.
+
+## 5. Reliability caveat carried forward from Gate G1
 
 D1 (opacity, κ = 0.7788) and D3 (adversarial forgery, κ = 0.7794) both cleared the 0.6
 reliability bar on the first blind-recode pass and are used here exactly as originally
@@ -134,7 +187,7 @@ source *asserts* corroborating telemetry that this project cannot independently 
 That is the ceiling on M2 in particular, and it should be stated in the report's Results
 section, not left implicit.
 
-## 5. Freeze statement
+## 6. Freeze statement
 
 Per `planning/SPRINT-PLAN.md` §6, P1.3 ("Run the metric script. Write the four numbers
 down and stop touching the ledger."), `ledger/claims.csv` is frozen at **v1.1** as of
