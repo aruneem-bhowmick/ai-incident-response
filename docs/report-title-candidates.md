@@ -19,10 +19,12 @@ All candidates below try to honor that.
    "any degradation" (`DEGRADED` + `COLLAPSES`) is 77.8% (7/9). **Caveat: n=9.** Small,
    should be stated as directional in the report itself (see `docs/headline-metrics.md`
    after issue #41 lands).
-2. **The broad, well-powered finding (M5, supplementary):** 84.5% of all 116 claims
+2. **The broad, well-powered finding (M5, supplementary):** 78.4% of all 125 claims
    rest on a channel the codebook's own fragility ranking treats as fragile (C1/C2/C3/C6),
-   and 50.9% of all claims have no corroboration at all on top of that. This is the
-   strongest, most statistically robust number in the whole ledger (n=116, not n=9).
+   and 47.2% of all claims have no corroboration at all on top of that. This is the
+   strongest, most statistically robust number in the whole ledger (n=125, not n=9).
+   (Updated from 84.5%/50.9% at n=116 after a later, disclosed 9-row addition from
+   lw-01/lw-02 — see `docs/headline-metrics.md` §4.)
 3. **The regulator-facing finding (M4):** 57.1% of the incident's "we've got this
    contained" assurance claims cannot be independently verified by anyone outside the
    lab.
@@ -42,14 +44,14 @@ caveat stated prominently right where the title's claim is made, or a sharp read
 ask "out of how many?" immediately.
 
 **B — anchored on the broad finding, strongest statistics, recommended:**
-> "84% of the July 2026 AI Incident Record Rests on a Channel This Project's Own
+> "78% of the July 2026 AI Incident Record Rests on a Channel This Project's Own
 > Framework Calls Fragile"
 
 or shorter:
 > "Most of What We Know About the July 2026 AI Incident Rests on Fragile Evidence — and
 > That's Measurable"
 
-*Pro:* n=116, the best-powered number in the ledger; matches the original one-sentence
+*Pro:* n=125, the best-powered number in the ledger; matches the original one-sentence
 thesis ("the public understanding... is disproportionately warranted by the single
 evidentiary channel most likely to disappear or be forged") more literally than the
 narrow finding does, once "fragile channel" is read broadly rather than as CoT alone.
@@ -68,7 +70,7 @@ attention if both get stated.
 ## Recommendation
 
 **B**, with **A's finding stated prominently in the abstract/intro** rather than the
-title — B's number is the one that survives scrutiny at n=116, and it's the more literal
+title — B's number is the one that survives scrutiny at n=125, and it's the more literal
 match to the project's own one-sentence thesis. A's finding is real and worth leading
 with in the body (it's more emotionally legible — "the record can't tell you *why*"),
 but shouldn't carry the weight of a title on 9 data points.
