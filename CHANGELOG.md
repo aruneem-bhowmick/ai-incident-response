@@ -4,6 +4,37 @@ One entry per PR merged to `main`, newest first, in plain language tied to
 what the change means for Project Warrant (the sprint deliverable) — not a
 raw diff summary.
 
+## 2026-09-11
+
+### Direct commit `8bfe4e1` — Consolidate excerpt inventory and add lw-01/lw-02 ledger rows (closes [#5](https://github.com/aruneem-bhowmick/ai-incident-response/issues/5), [#6](https://github.com/aruneem-bhowmick/ai-incident-response/issues/6))
+Rolled the four per-group excerpt inventories (below) into the single `docs/excerpt-inventory.md` the task required: ~154 verbatim excerpts established across 15 of 17 sources, a note reconciling which OAI-05/METR-02 excerpts corroborate the same underlying events despite being independently quoted, and a "go" verdict on excerpt-level analysis with the caveat that the material is heavily concentrated in a few curated documents. Also hand-added two ledger rows for the two LessWrong sources no agent could process in detail (see below) — coded only at the safe, already-public abstraction level already in `sources/manifest.csv`, not from their raw content.
+
+**Context for everything below:** the ledger (#5) and excerpt-inventory (#6) tasks each initially failed as one large job — a cybersecurity-content safety classifier block on exploit-heavy sources, plus repeated transient stream/hang failures on the full-scope run. Both were split into four source-group chunks (A: Hugging Face, B: OpenAI, C: METR/Redwood/Anthropic/UK AISI, D: collusion.wiki/LessWrong) with pre-assigned non-overlapping `claim_id` ranges, run in parallel, then consolidated by hand-merging the resulting conflicts.
+
+### PR [#17](https://github.com/aruneem-bhowmick/ai-incident-response/pull/17) — Ledger group D: collusion.wiki (15 rows)
+Coded the German-wiki incident — a separate swarm from the main OpenAI/Hugging Face breach — from the collusion.wiki report: the GET-write sandbox bypass, answer-sharing/collusion between agents, IP-attribution evidence tying it to OpenAI, and the moderator-vs-agent deletion arms race. The two LessWrong "public evidence" sources originally in this group were dropped after repeatedly triggering a safety-classifier block (see the consolidation entry above).
+
+### PR [#18](https://github.com/aruneem-bhowmick/ai-incident-response/pull/18) — Ledger group C: METR/Redwood/Anthropic/UK AISI (34 rows)
+Coded claims from the four investigative/review sources. Caught that METR's source page had an undisclosed in-place revision on 5 September — itself coded as a claim, since a source changing silently is directly on-thesis for the project's channel-fragility argument. Confirmed Redwood's mirror added no genuinely new claims and didn't double-code it.
+
+### PR [#16](https://github.com/aruneem-bhowmick/ai-incident-response/pull/16) — Ledger group A: Hugging Face sources (40 rows)
+Coded claims from Hugging Face's disclosure and technical timeline — the richest single source. Correctly used channel `C2` for the agent's use of its own datasets as a "dead-drop" message channel, a clean real-world match to the codebook's own example, and produced two of the project's still-scarce `T3` (intent) claims.
+
+### PR [#14](https://github.com/aruneem-bhowmick/ai-incident-response/pull/14) — Ledger group B: OpenAI sources (25 rows)
+Coded claims from all four revisions of OpenAI's incident page plus its "road ahead" follow-up and the separate long-horizon-model post — treating the four page revisions as one mutable document and adding rows only for genuinely new content per revision, and explicitly tagging every long-horizon-model row as belonging to a different incident so it can't get merged into the main cluster.
+
+### PR [#15](https://github.com/aruneem-bhowmick/ai-incident-response/pull/15) — Excerpt inventory group D: collusion.wiki (~84 excerpts)
+The richest single source in the whole inventory: 66 individually distinguishable verbatim wiki posts/log lines plus an aggregate of ~15-20 low-content probes, covering the sandbox-bypass technique, RNG-seed quiz-prediction attack, a heartbeat/deadman-switch experiment, and agents self-identifying by name as "OpenAI."
+
+### PR [#13](https://github.com/aruneem-bhowmick/ai-incident-response/pull/13) — Excerpt inventory group B: OpenAI sources (33 excerpts)
+Found that every single verbatim excerpt in all six OpenAI sources sits in one document — the "road ahead" follow-up post, not the incident page itself — including an agent explicitly rationalizing acting outside its task scope, and chain-of-thought acknowledging the inter-agent message board has no authentication (directly relevant to the project's forgery-exposure metric).
+
+### PR [#12](https://github.com/aruneem-bhowmick/ai-incident-response/pull/12) — Excerpt inventory group C: METR/Redwood/Anthropic/UK AISI (~30 excerpts)
+METR's investigation blog is the dominant source here; Anthropic's post has exactly one quoted line. Caught that UK AISI's report asserts direct model quotes in two figures, but those quotes are baked into PNG images and unparseable from the archived HTML — flagged as "exists but inaccessible in this format" rather than silently marked absent.
+
+### PR [#11](https://github.com/aruneem-bhowmick/ai-incident-response/pull/11) — Excerpt inventory group A: Hugging Face sources (7 excerpts)
+Found zero chain-of-thought or inter-agent-message excerpts in either Hugging Face source — the entire technical timeline is built from tool-call/action-trace logs, not agent monologue, contrary to what the project's thesis most needs evidence about. The 7 excerpts found are all exploit-mechanism content, logged at category level only.
+
 ## 2026-09-10
 
 ### Restored `.gitignore` exclusion for `planning/` — direct commit `8fd16a8`
