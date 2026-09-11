@@ -1,0 +1,11 @@
+# Ignore AI tooling
+.claude
+.codex
+.cursor
+
+# Tool/editor directories
+.zed
+.vscode
+.history/
+.specstory/
+.cursorindexingignore
