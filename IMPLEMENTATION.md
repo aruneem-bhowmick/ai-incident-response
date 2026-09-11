@@ -54,6 +54,12 @@ populated), run the test suite:
 python scripts/test_metrics.py
 ```
 
+## Changelog
+
+`CHANGELOG.md` at the repo root has a plain-language, sprint-framed entry
+for every PR merged to `main` — what to read if you want "what changed and
+why it matters for Project Warrant" without reading diffs.
+
 ## What is not built yet
 
 The **MRFM v0.1** — the project's draft minimum forensic standard that Results
