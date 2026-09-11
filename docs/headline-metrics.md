@@ -60,15 +60,20 @@ is exactly the evidentiary channel this project's thesis flags as most likely to
 absent, unfaithful, or forged in a future incident — so a non-trivial slice of the
 public's understanding of this agent's intent already depends entirely on it.
 
+**Sample-size caveat:** This is 1 of 9 T3 claims in the ledger — a single row changes
+this figure by roughly 11 percentage points, so treat 11.1% as directional, not precise,
+until a larger claim population is coded (e.g. in a follow-up incident or a larger
+sample of this one).
+
 ### M2 — Record survival under opacity: **89.7%** overall (0.8966); by claim type below
 
-| Claim type | Survival under D1 (opacity) |
-|---|---|
-| T1 — Event | **100.0%** (1.0000) |
-| T2 — Mechanism | **89.5%** (0.8947) |
-| T3 — Intent | **22.2%** (0.2222) |
-| T4 — Counterfactual | **100.0%** (1.0000) |
-| T5 — Assurance | **92.9%** (0.9286) |
+| Claim type | n | Survival under D1 (opacity) |
+|---|---|---|
+| T1 — Event | 53 | **100.0%** (1.0000) |
+| T2 — Mechanism | 38 | **89.5%** (0.8947) |
+| T3 — Intent | 9 | **22.2%** (0.2222) |
+| T4 — Counterfactual | 2 | **100.0%** (1.0000) |
+| T5 — Assurance | 14 | **92.9%** (0.9286) |
 
 **Definition:** share of all claims (overall, and per claim type) whose D1 verdict is
 `SURVIVES` — i.e., the claim's warrant would still hold up even if chain-of-thought were
@@ -78,9 +83,15 @@ never logged or never disclosed to investigators.
 still be knowable even if the agent's chain-of-thought had never been released — except
 for claims about the agent's *intent* (T3), where survival collapses to about one in
 five. This is exactly the split the sprint plan predicted (§4.5: "the prediction is that
-T1 survives and T3/T4 do not") — it holds for T1 and, notably, does *not* hold for T4 in
-this ledger (T4 also survives at 100%), but it holds sharply for T3: intent claims are
-the ones genuinely dependent on CoT being available at all.
+T1 survives and T3/T4 do not") — it holds for T1, and it holds sharply for T3 (n=9):
+intent claims are the ones genuinely dependent on CoT being available at all.
+
+**Sample-size caveat on T4:** the ledger contains only 2 T4 (counterfactual) claims
+total, and both survive D1 (100%, i.e. 2/2). That is not a statistically meaningful test
+of the plan's prediction that T3/T4 should both fail to survive — two data points cannot
+confirm or refute a prediction either way. The honest reading is that T4 didn't collapse
+in this ledger's two counterfactual claims, but there isn't enough T4 data here to call
+the plan's prediction confirmed or refuted for that claim type.
 
 ### M3 — Forgery exposure: **9.5%** (0.0948)
 
