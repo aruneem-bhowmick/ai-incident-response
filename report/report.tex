@@ -1,0 +1,185 @@
+% =============================================================================
+% Project Warrant -- report skeleton
+%
+% Apart Research x CeSIA AI Incident Response Sprint, Track 2
+% ("What happened, and what breaks next")
+%
+% STATUS: structural skeleton only (P0.6). Every section below is a stub --
+% no real content, results, or citations have been written yet. Each section
+% carries a one-line placeholder comment describing what will go there, plus
+% a short bracketed placeholder line so the outline is visible if this is
+% compiled as-is. Do not treat any placeholder text as a draft of real
+% content.
+%
+% Outline follows the project's own report plan (not the generic sprint
+% template's generic outline): Introduction, Related Work, Method, Results,
+% MRFM v0.1, Discussion, then appendices. Target 4-6 pages of body content;
+% the sprint's official guidelines cap submissions at 8 pages excluding
+% references and appendices, so this outline (summing to ~6.75p across
+% Introduction-Discussion) stays under that cap with margin.
+% =============================================================================
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\title{Project Warrant: Evidentiary Channel Dependence in the July 2026 \\
+OpenAI/Hugging Face Agent-Escape Incident \\
+\large \emph{[working title -- placeholder]}}
+
+\author{Aruneem Bhowmick \\ \emph{With Apart Research \& CeSIA}}
+
+\date{September 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% TODO (P2/P3): 150-250 word abstract. Cover: the problem (public
+% understanding of the incident rests unevenly on evidentiary channels of
+% unequal durability/trust), the approach (claim ledger + three degradation
+% conditions + four headline metrics + draft MRFM v0.1), key results (M1-M4
+% values, once computed from the completed ledger), and the main takeaway.
+% Write this last, after Results is final.
+\emph{[Placeholder -- abstract to be written after Results is final. One-sentence
+thesis for reference while drafting: the public understanding of this incident
+is disproportionately warranted by the single evidentiary channel most likely
+to disappear or be forged next time, and that dependency is measurable.]}
+\end{abstract}
+
+% -----------------------------------------------------------------------------
+\section{Introduction}
+\label{sec:introduction}
+% ~0.75p. TODO: state the problem (evidentiary channels behind public incident
+% claims are unevenly trustworthy/durable, and nobody has measured the
+% dependency), connect to why it matters for the next incident, briefly
+% describe the July 2026 OpenAI/Hugging Face incident and the three
+% degradation conditions (opacity, unfaithfulness, adversarial forgery), and
+% list this project's main contributions (claim ledger, M1-M4 metrics, MRFM
+% v0.1 draft standard).
+\emph{[Placeholder -- introduction, thesis statement, and contributions list.]}
+
+% -----------------------------------------------------------------------------
+\section{Related Work}
+\label{sec:related-work}
+% ~0.75p. TODO: situate this project against prior work on CoT
+% monitorability/faithfulness, agent forensics, and AI incident reporting
+% frameworks. Draw from /docs/prior-art.md (annotated bibliography, produced
+% by a separate P0 task) once it exists. Explain the gap this project fills:
+% no existing framework measures channel-dependence of specific public claims
+% about a specific incident.
+\emph{[Placeholder -- prior art on CoT faithfulness/monitorability, agent
+forensics, and incident-reporting standards; see \texttt{/docs/prior-art.md}.]}
+
+% -----------------------------------------------------------------------------
+\section{Method}
+\label{sec:method}
+% ~1.25p. TODO: describe the claim ledger construction process (sourcing,
+% paraphrase discipline, retrieval dates), the coding codebook (claim_type,
+% channel codes, verifiability tiers -- see /docs/codebook.md), the three
+% degradation conditions D1 (opacity) / D2 (unfaithfulness) / D3 (adversarial
+% forgery) and how verdicts are assigned, and the four headline metric
+% definitions (M1 CoT monopoly, M2 record survival under opacity, M3 forgery
+% exposure, M4 assurance gap) as implemented in /scripts/metrics.py.
+\emph{[Placeholder -- ledger methodology, codebook summary, degradation
+conditions, and M1-M4 metric definitions; full computation in
+\texttt{/scripts/metrics.py}.]}
+
+% -----------------------------------------------------------------------------
+\section{Results}
+\label{sec:results}
+% ~1.5p. TODO: report M1-M4 as computed by `python scripts/metrics.py` against
+% the finished ledger (>= 80 rows, Gate G0). Include at least one figure
+% (e.g. claim counts by channel, or survival rates by claim_type) and a
+% results table. Distinguish observations from interpretations; discuss
+% robustness (sample size, sensitivity to coding judgment calls).
+\emph{[Placeholder -- M1-M4 results table/figure, once the ledger is complete;
+values must come from \texttt{scripts/metrics.py}, never computed by hand
+(R-03).]}
+
+% -----------------------------------------------------------------------------
+\section{MRFM v0.1}
+\label{sec:mrfm}
+% ~1p. TODO: present the draft v0.1 minimum forensic-adequacy standard
+% (MRFM) motivated directly by the Results -- i.e. which evidentiary
+% preservation/verification practices would have closed the gaps M1-M4
+% expose. Summarize the standard's clauses here; the full clause table (with
+% evidence required per clause and rough cost per clause) belongs in
+% Appendix~\ref{app:mrfm-table}.
+\emph{[Placeholder -- MRFM v0.1 summary; full clause table in the appendix.]}
+
+% -----------------------------------------------------------------------------
+\section{Discussion}
+\label{sec:discussion}
+% ~0.75p. TODO: broader implications for AI safety and incident response --
+% what the channel-dependence finding means for the next incident, what
+% trends in the ledger are notable, and a short conclusion. Detailed
+% limitations and dual-use considerations go in Appendix~\ref{app:limitations}
+% (kept out of the body per the sprint guidelines' page budget), not here --
+% this section should only gesture at them.
+\emph{[Placeholder -- implications, notable trends, brief conclusion.]}
+
+% -----------------------------------------------------------------------------
+\section*{References}
+% TODO: consistent citation format (Author(s), Year, Title, Venue/Publisher,
+% URL/DOI). Populate from /sources/manifest.csv and /docs/prior-art.md.
+% Excluded from the body page budget per the sprint's page cap rules.
+\emph{[Placeholder -- references, to be populated from
+\texttt{/sources/manifest.csv} and \texttt{/docs/prior-art.md}.]}
+
+% =============================================================================
+% Appendices (excluded from the body page budget per the sprint's page cap).
+% =============================================================================
+\appendix
+
+% -----------------------------------------------------------------------------
+\section{Limitations and Dual-Use Considerations}
+\label{app:limitations}
+% REQUIRED in every submission regardless of track (sprint guidelines).
+% TODO -- Limitations: scope limits (single incident, solo coder, sprint
+% timeframe), methodological limits (coding subjectivity, small-N per
+% claim_type slice, no inter-rater reliability check), and assumptions made
+% (e.g. treating certain channels as agent-writable) with how conclusions
+% would change if those assumptions failed.
+% TODO -- Dual-Use Considerations: whether publishing a channel-dependence
+% map or an MRFM clause table could help an adversary target the weakest
+% evidentiary channel for a future incident, and what (if anything) is
+% withheld or generalized rather than published in full per R-06.
+\emph{[Placeholder -- limitations (scope, methodology, assumptions) and
+dual-use considerations (whether this analysis could help an adversary target
+the weakest evidentiary channel next time).]}
+
+% -----------------------------------------------------------------------------
+\section{Full MRFM v0.1 Clause Table}
+\label{app:mrfm-table}
+% TODO: full clause table -- one row per clause, columns for clause text,
+% evidence required, and rough cost/effort per clause. Referenced from
+% Section~\ref{sec:mrfm}.
+\emph{[Placeholder -- full clause table (clause, evidence required, rough
+cost), referenced from Section~\ref{sec:mrfm}.]}
+
+% -----------------------------------------------------------------------------
+\section{Claim Ledger}
+\label{app:ledger}
+% TODO: link/reference to the full claim ledger. The ledger itself lives at
+% /ledger/claims.csv (schema in /ledger/schema.md) and is too large to
+% reproduce in the report body; this appendix should point to it (and, if a
+% public repo link exists by submission time, include that URL here).
+\emph{[Placeholder -- pointer to \texttt{/ledger/claims.csv} and its schema in
+\texttt{/ledger/schema.md}; add the public repo URL here once available.]}
+
+% -----------------------------------------------------------------------------
+\section{Codebook}
+\label{app:codebook}
+% TODO: either reproduce the frozen codebook in full or point to
+% /docs/codebook.md if it is long. Must reflect the FROZEN version used for
+% final coding (see /adr/ for any post-freeze changes, per R-07).
+\emph{[Placeholder -- frozen claim-coding codebook, or a pointer to
+\texttt{/docs/codebook.md}; note any post-freeze changes via \texttt{/adr/}.]}
+
+\end{document}
