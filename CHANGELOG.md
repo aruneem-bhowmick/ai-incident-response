@@ -6,6 +6,12 @@ raw diff summary.
 
 ## 2026-09-12 (P3)
 
+### PR [#85](https://github.com/aruneem-bhowmick/ai-incident-response/pull/85) — Draft the report's Discussion section (closes [#73](https://github.com/aruneem-bhowmick/ai-incident-response/issues/73))
+Closes Gap B from the 2026-09-12 stress test — Track 2's own judging criterion (causal explanations that predict something) now has an explicit answer in the report. States the argument as a structural claim: intent-attribution is inherently harder to corroborate than events or mechanisms because intent is internal-state information that, absent chain-of-thought, can only be inferred behaviorally at lower fidelity — a prediction about *future* agentic incidents' intent claims, not just an observation about this one. Also ties the RFI questions to Track 3 as a portable hook, scopes a project-wide "what a month adds" list distinct from MRFM's own, and closes by restating the thesis M5-first.
+
+### PR [#84](https://github.com/aruneem-bhowmick/ai-incident-response/pull/84) — Draft the report's Method section (closes [#70](https://github.com/aruneem-bhowmick/ai-incident-response/issues/70))
+Documents the instrument itself: the channel/claim-type/degradation/verifiability coding axes, the paraphrase-and-retrieval-dated sourcing discipline, and the reliability protocol. States the D2 reliability failure (κ=0.5690, below the 0.6 bar, against D1's 0.7788 and D3's 0.7794) plainly as a strength — the ADR-driven fix and full recode is the clearest evidence the reliability check was a real test, not a rubber stamp.
+
 ### PR [#83](https://github.com/aruneem-bhowmick/ai-incident-response/pull/83) — Draft the Limitations and Dual-Use Considerations appendix (closes [#74](https://github.com/aruneem-bhowmick/ai-incident-response/issues/74))
 DL-7, the sprint's required appendix, drafted in full. Updates the sprint plan's original Limitations/Dual-Use draft with five caveats that accumulated after that draft was written: the single-coder-plus-blind-recode reliability posture (with the actual κ numbers, including D2's fix), the asserted-corroboration ceiling on M2 restated as a formal limitation, the small-N caveats on M1 (n=9) and T4 (n=2), and the residual lw-01/lw-02 category-level-only gap. Dual-Use keeps the plan's original framing — no reproducible tamper/spoof technique published (R-06), and an explicit statement declining to reproduce the documented spoofing technique despite it appearing in a public source.
 
