@@ -6,6 +6,9 @@ raw diff summary.
 
 ## 2026-09-12 (P3)
 
+### PR [#80](https://github.com/aruneem-bhowmick/ai-incident-response/pull/80) — Resolve the LaTeX/PDF build path for the report (closes [#67](https://github.com/aruneem-bhowmick/ai-incident-response/issues/67))
+Closed Gap A from the 2026-09-12 stress test: this machine had no LaTeX toolchain installed at all. Rather than a multi-gigabyte system-wide TeX install, downloaded the portable Tectonic engine into a repo-local, gitignored path (`.tools/tectonic.exe`) — no admin rights, no PATH changes, fully reversible. Smoke-tested against the still-placeholder `report/report.tex` skeleton and it compiled clean. `report/BUILD.md` now has the exact working command plus a documented Overleaf fallback, so producing the final `report.pdf` is a solved problem well before the report's content is finished.
+
 ### PR [#79](https://github.com/aruneem-bhowmick/ai-incident-response/pull/79) — Draft the report's Related Work section (closes [#69](https://github.com/aruneem-bhowmick/ai-incident-response/issues/69))
 First P3 report section to land. `report/drafts/related-work.tex` synthesizes `docs/prior-art.md`'s three sweeps — CoT monitorability/faithfulness, agent-forensics/incident-analysis frameworks, and incident-reporting design — into the report's actual Related Work prose, and states the gap this project fills explicitly: no existing framework measures channel-dependence of specific public claims about a specific incident. Sets up the later MRFM diff by naming the GovAI/METR connection here first, so the RESTATES/STRENGTHENS/NEW result doesn't surprise a reader encountering it cold. Fifteen citations, each traced back to a real entry in the prior-art doc.
 
