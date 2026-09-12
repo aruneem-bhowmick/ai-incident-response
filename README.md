@@ -35,8 +35,10 @@ weakest.
   request-for-information questions derived directly from the ledger rows where the
   public record is weakest (`verifiability == V3` or any degradation-verdict
   `COLLAPSES`).
-- **Report** — `report/report.pdf` (forthcoming; produced by a separate, currently-blocked
-  issue). Until then, the LaTeX source is at [`report/report.tex`](report/report.tex).
+- **Report** — [`report/report.pdf`](report/report.pdf), the final compiled submission (24
+  pages total, 7-8 pages of body content excluding references/appendices). LaTeX source at
+  [`report/report.tex`](report/report.tex); build instructions in
+  [`report/BUILD.md`](report/BUILD.md).
 
 Supporting materials: the source manifest and archived primary sources
 ([`sources/`](sources/)), the metrics/reliability scripts and their unit tests
