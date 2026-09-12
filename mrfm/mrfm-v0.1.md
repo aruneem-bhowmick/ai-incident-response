@@ -1,5 +1,7 @@
 # MRFM v0.1 — Monitorability-Robust Forensic Minimum
 
+**v0.1 — frozen 2026-09-12**
+
 **Project:** Project Warrant — a solo audit, for the Apart Research × CeSIA AI Incident
 Response Sprint (Track 2), of which evidentiary channel each public claim about the July
 2026 OpenAI/Hugging Face agent-escape incident actually rests on. MRFM is this project's
@@ -703,3 +705,70 @@ checkable. And where MRFM is NEW, that's not this project inventing requirements
 own sake: it's a plain reading of what a 125-row incident ledger surfaced that two of the
 most directly relevant existing frameworks, published before and immediately after this
 incident, did not anticipate.
+
+---
+
+## Limitations of MRFM v0.1
+
+A standard drafted in a weekend is a v0.1, and this document should be read with that
+label taken literally, not as a hedge. Per the sprint plan's own framing for a deliverable
+of this shape: neither a clause list nor a working harness shows any particular lab's
+environment is adequate. What follows is what this table can and cannot be taken to
+establish.
+
+**What this clause table cannot establish:**
+
+- **Adoptability.** No lab was asked whether any of these 14 clauses is operationally
+  feasible, and no cost-band estimate above (Low/Medium/High) was validated against an
+  actual engineering team's estimate — each is this project's own reasoned guess, not a
+  quote from anyone who would have to implement it. A clause with a "Low" cost band could
+  still be organizationally expensive for reasons this document has no visibility into
+  (legal review, competing roadmap priorities, existing tooling that doesn't fit the
+  pattern assumed here).
+- **Gameability of the evidence-required fields.** Each clause's "Evidence required" text
+  was drafted to be checkable by a third party in principle, but none of it has been
+  red-teamed by someone trying to satisfy the letter of the requirement while defeating
+  its purpose (e.g., a hash-chained log that is technically unbroken but was never fed the
+  events that mattered, or a "verification procedure" disclosure vague enough to be
+  unfalsifiable in practice despite MRFM-CROSS-1's stated bar). That adversarial pass has
+  not happened.
+- **Coverage beyond this incident.** All 14 clauses were reverse-engineered from gaps
+  found in one 125-row ledger about one incident. That grounding is this document's main
+  strength (every clause traces to a specific, evidenced gap rather than a generic
+  wish-list), but it is also a limitation: a different incident, a different lab's
+  architecture, or a different class of agent deployment could easily expose gaps these
+  14 clauses don't cover, and nothing here tests whether 14 clauses is enough in general
+  — only that these 14 answer what this one incident's public record showed.
+- **Enforceability.** Nothing in this document addresses who would require labs to adopt
+  MRFM, what the consequence of non-adoption would be, or how a clause's satisfaction
+  would be adjudicated in a contested case. This is a proposed evidentiary content
+  standard, not a governance or enforcement mechanism.
+- **Independent legal or technical review.** No one outside this solo project has read
+  these clauses. They have not been checked by a lawyer for enforceability as contract or
+  regulatory language, nor by a security engineer for whether the cryptographic
+  mechanisms (hash-chaining, signing, escrow) are specified precisely enough to implement
+  without ambiguity.
+
+**What a month of follow-up would add:**
+
+- Actually circulating the clause table to one or more labs (or to people who have worked
+  inside a lab's safety/security org) and recording whether they consider each clause
+  adoptable, and at what estimated cost — replacing this document's own cost-band guesses
+  with real ones.
+- A dedicated red-teaming pass against the "Evidence required" and "Verifier" fields of
+  each clause: for each one, an adversarial attempt to construct a scenario that satisfies
+  the literal requirement while defeating the verification the clause is supposed to
+  provide, then revising the clause text to close the gap found.
+- Expanding past the current 8-14 clause range by piloting MRFM-style disclosure against a
+  second, independent incident (real or a constructed red-team scenario) to see which
+  clauses generalize unchanged, which need reformulation, and which gaps remain uncovered
+  — rather than relying on a single incident's ledger as the only source of evidenced
+  gaps.
+- A structured comparison against a wider set of prior-art frameworks than the two
+  (METR, GovAI) diffed in P2.2, to check whether the "10 of 14 NEW" finding holds up
+  against, e.g., emerging regulatory frameworks or other labs' own published incident
+  playbooks.
+- Piloting the RFI questions in `docs/rfi-questions.md` against an actual regulator's
+  review process, or at minimum against feedback from someone who has drafted or received
+  a real RFI, to check whether the questions as phrased would function as intended in
+  practice.
