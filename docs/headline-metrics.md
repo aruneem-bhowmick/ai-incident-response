@@ -93,15 +93,22 @@ this figure by roughly 11 percentage points, so treat 11.1% as directional, not 
 until a larger claim population is coded (e.g. in a follow-up incident or a larger
 sample of this one).
 
-### M2 — Record survival under opacity: **89.7%** overall (0.8966); by claim type below
+### M2 — Record survival under opacity: **90.4%** overall (0.9040); by claim type below
 
 | Claim type | n | Survival under D1 (opacity) |
 |---|---|---|
-| T1 — Event | 53 | **100.0%** (1.0000) |
-| T2 — Mechanism | 38 | **89.5%** (0.8947) |
+| T1 — Event | 58 | **100.0%** (1.0000) |
+| T2 — Mechanism | 42 | **90.5%** (0.9048) |
 | T3 — Intent | 9 | **22.2%** (0.2222) |
 | T4 — Counterfactual | 2 | **100.0%** (1.0000) |
 | T5 — Assurance | 14 | **92.9%** (0.9286) |
+
+(Table corrected 2026-09-12 to the frozen 125-row ledger's per-type n's and percentages —
+the table previously carried stale 116-row figures left over from before the
+`lw-01`/`lw-02` addition, even though §2's verbatim script output above was already
+correct. Independently re-verified against a fresh `ledger/claims.csv` read and a live
+`python scripts/metrics.py` run, both of which match this table exactly. No metric value
+changed; only this table's own carried-over numbers were stale.)
 
 **Definition:** share of all claims (overall, and per claim type) whose D1 verdict is
 `SURVIVES` — i.e., the claim's warrant would still hold up even if chain-of-thought were
