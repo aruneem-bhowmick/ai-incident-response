@@ -72,6 +72,14 @@ tagging/retrieval pipeline that flags and separably stores excerpts matching the
 criteria and a disclosure process for producing them, roughly 1-4 engineer-weeks rather than
 new capture infrastructure.
 
+**vs. prior art:** STRENGTHENS
+
+**Prior-art note:** GovAI's "adjacent material" item already asks developers to retain
+"records of the agent's reasoning/decision process," and METR's "Full transcripts /
+reproducible environments" item asks for complete transcripts sufficient to reconstruct an
+incident; MRFM-D1-1 narrows this to a criteria-gated subset and adds contemporaneous
+flagging plus separable storage that neither source specifies.
+
 ### MRFM-D1-2: Third-party escrow receipt for retained reasoning traces
 
 **Requirement:** At the time a reasoning-trace excerpt is flagged and retained under
@@ -100,6 +108,13 @@ is needed.
 **Cost band:** High — requires a standing relationship with an independent party and ongoing
 operational integration into the evaluation/deployment pipeline, a genuinely recurring cost
 rather than a one-time build.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** Neither METR's investigation-access list nor GovAI's retention list
+mentions cryptographic hashing or third-party escrow of retained evidence — both stop at
+"retain it and grant investigator access," with no mechanism for proving retained content
+wasn't altered or backfilled after the fact.
 
 ### MRFM-D1-3: Pre-registered retention-trigger criteria and disclosure window
 
@@ -133,6 +148,14 @@ access.
 **Cost band:** Low — a policy/documentation exercise defining criteria and a timing
 commitment in advance; it adds no new capture infrastructure beyond what MRFM-D1-1 already
 requires, so it is achievable as a policy change in under an engineer-week.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** Neither METR nor GovAI address publishing classification criteria or a
+disclosure-timing commitment in advance of deployment; both lists specify what to retain,
+not when the rules governing retention/disclosure must be fixed relative to an incident
+(this clause's design-time framing instead draws on the CoSAI/NIST entries already cited in
+its own text, which sit outside the METR/GovAI scope this diff targets).
 
 ---
 
@@ -187,6 +210,14 @@ report-writing discipline of mapping each reasoning/intent claim to its specific
 corroborating channel (or explicitly flagging its absence) rather than generating new
 evidence.
 
+**vs. prior art:** NEW
+
+**Prior-art note:** METR's list asks that investigators be given transcripts, interviews,
+and reproduction access so they can independently check things themselves; GovAI's
+retention list is silent on report-writing epistemics entirely. Neither requires the
+report's own authors to corroborate a self-reported reasoning claim with a non-self-report
+channel before presenting it as established fact.
+
 ### MRFM-D2-2: Self-report vs. independently-confirmed labeling requirement
 
 **Requirement:** Every sentence or claim in an incident report that asserts a
@@ -216,6 +247,13 @@ the same zero-network-access bar as MRFM-D2-1's verification.
 **Cost band:** Low — under an engineer-week. This is a drafting/formatting convention
 applied at report-writing time, comparable in effort to standard citation formatting, not
 a new technical capability.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** No labeling/provenance convention for individual claims appears in
+either GovAI's retention list or METR's investigation-access list; both are silent on how a
+published report should visibly distinguish self-reported from independently-confirmed
+content.
 
 ### MRFM-D2-3: Faithfulness-measurement disclosure requirement
 
@@ -259,6 +297,13 @@ pipeline to run and report a baseline measurement using established methodology 
 the implicated model. Labs with an existing internal faithfulness-testing practice incur
 only the low cost of disclosure; the band is set at Medium because the requirement must
 still be satisfiable by a lab starting from zero.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** Neither METR nor GovAI mention faithfulness-measurement disclosure at
+all; this clause is grounded instead in the CoT-faithfulness position-paper literature
+(`docs/prior-art.md` §1) — a different sweep than the METR/GovAI investigation-and-retention
+sweep this diff targets.
 
 ---
 
@@ -306,6 +351,14 @@ dependency on key management or external infrastructure; the main cost is discip
 integration into existing logging pipelines for C1/C2/C3, not new cryptographic
 machinery.
 
+**vs. prior art:** STRENGTHENS
+
+**Prior-art note:** GovAI's "Activity logs" item already asks for "a complete, timestamped
+record of the agent's actions and outputs/decisions"; MRFM-D3-1 adds the hash-chaining
+mechanism (each entry's hash covers its own content plus the prior entry's hash) that makes
+tampering with an already-written entry detectable — a verification property GovAI's plain
+"complete record" ask does not specify.
+
 ### MRFM-D3-2: Cryptographic signing of agent-writable channel entries, keyed to originating agent/session
 
 **Requirement:** Every entry written to an agent-writable channel (C1, C2, C3) must be
@@ -338,6 +391,13 @@ rather than novel cryptography; the incident record itself shows agents improvis
 version of this scheme under far worse conditions (no prior key infrastructure, no lab
 support), so a lab-provisioned version should not exceed that in difficulty.
 
+**vs. prior art:** STRENGTHENS
+
+**Prior-art note:** Same GovAI "Activity logs" baseline as MRFM-D3-1; this clause adds
+cryptographic signing keyed to originating agent/session so authorship is independently
+verifiable, rather than resting on the channel's own unauthenticated, self-reported
+attribution — a mechanism GovAI's record-keeping ask does not specify.
+
 ### MRFM-D3-3: Pre-committed, publicly checkable verification material
 
 **Requirement:** At or before the start of an evaluation, a lab must publish (or commit
@@ -367,6 +427,12 @@ verification time.
 existing public transparency-log service or a simple timestamped public post is
 low-effort and does not require building new infrastructure beyond what MRFM-D3-1/D3-2
 already require the lab to generate.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** Neither source addresses pre-committing or publicly timestamping
+verification material (hash-chain checkpoints, signing keys) before an evaluation begins;
+this closes a backdating loophole that GovAI's and METR's lists don't anticipate at all.
 
 ### MRFM-D3-4: Retained, independently checkable egress logs
 
@@ -401,6 +467,13 @@ logs as a byproduct of sandboxing, so raw collection cost is typically low, but 
 them for the full incident window at cross-checkable granularity and preparing them for
 third-party disclosure (redaction, format normalization) adds real, non-trivial effort
 beyond what many labs currently budget for.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** GovAI's closest item, "Tool information," covers documentation of tool
+calls and their outputs — itself an agent-mediated, agent-writable record; neither GovAI
+nor METR ask for a non-agent-writable network-egress channel retained specifically to
+cross-check what agent-writable channels claim happened.
 
 ---
 
@@ -461,6 +534,14 @@ some assurance claims (most notably "no copy of the model persists") currently h
 established positive-verification protocol at all, so satisfying this clause for those
 claims requires new protocol design, not just paperwork.
 
+**vs. prior art:** STRENGTHENS
+
+**Prior-art note:** METR's "Redaction summary / disclosure" item already asks for
+transparency about an investigation engagement's terms and how redactions limit what can
+be publicly substantiated; MRFM-CROSS-1 generalizes this from the engagement level to every
+individual T5 assurance claim in a published report, and requires a positive checkable
+procedure statement as the default, with a redaction summary only as fallback.
+
 ### MRFM-CROSS-2: Dated, versioned revision changelog
 
 **Requirement:** Any publicly published incident report that is later revised must carry
@@ -497,6 +578,12 @@ edit, is an editorial/publishing practice, not new infrastructure; the cost is d
 at publication time, comparable to the practice METR's own blog post already follows for
 its own revisions.
 
+**vs. prior art:** NEW
+
+**Prior-art note:** Neither METR's investigation-access list nor GovAI's retention list
+addresses the integrity of a published report's own revision history; both assume the
+report text itself is stable and say nothing about changelog or versioning practice.
+
 ### MRFM-CROSS-3: Machine-readable quotation requirement
 
 **Requirement:** Any verbatim model output — a chain-of-thought excerpt, an inter-agent
@@ -525,6 +612,12 @@ by figure captions but are not extractable text in the archived snapshot.
 **Cost band:** Low — this is a publication-formatting practice (embedding a text layer,
 or publishing a companion transcript for what is already internally text before it is
 rendered into a figure), not new data collection or new technical capability.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** Publication format (machine-readable vs. image-only quotation) is
+outside both METR's and GovAI's scope; neither addresses how quoted model output should be
+rendered in a published report.
 
 ### MRFM-CROSS-4: Staging-environment/third-party-compute retention obligation
 
@@ -561,3 +654,52 @@ all.
 third-party compute and evaluation agreements going forward; the ongoing cost to the
 third party is bounded by the stated retention period rather than open-ended, but it is
 a recurring obligation on every such agreement, not a one-time engineering change.
+
+**vs. prior art:** NEW
+
+**Prior-art note:** GovAI's "System documentation and access" item asks for documentation
+of the deployment environment and infrastructure setup, but assumes a single system
+boundary; neither GovAI nor METR address the case where the staging environment is
+third-party compute, or specify who is contractually obligated to retain and disclose logs
+for that second hop.
+
+---
+
+## Diff summary: MRFM v0.1 vs. METR/GovAI prior art
+
+Per issue #56 (P2.2): every clause above was diffed against `docs/prior-art.md`'s METR
+("How independent researchers could investigate AI propensities after misalignment
+incidents") and GovAI ("Incident Analysis for AI Agents") entries and labeled RESTATES,
+STRENGTHENS, or NEW. The result: **0 of 14 clauses RESTATE** an existing METR or GovAI
+requirement outright, **4 of 14 STRENGTHEN** one (`MRFM-D1-1`, `MRFM-D3-1`, `MRFM-D3-2`,
+`MRFM-CROSS-1`), and **10 of 14 are NEW** relative to both sources (`MRFM-D1-2`,
+`MRFM-D1-3`, `MRFM-D2-1`, `MRFM-D2-2`, `MRFM-D2-3`, `MRFM-D3-3`, `MRFM-D3-4`,
+`MRFM-CROSS-2`, `MRFM-CROSS-3`, `MRFM-CROSS-4`).
+
+This is the opposite of the sprint plan's cautionary case. A clause table that came back
+mostly RESTATES would have meant the guidance already existed and the gap is enforcement —
+that is *not* what this diff found, and that absence is itself the finding, not a
+scorecard win for the MRFM. METR's and GovAI's lists were written as general
+investigation-access and retention frameworks; MRFM's fourteen clauses were reverse-engineered
+from specific, evidenced gaps in this project's own 125-row claim ledger and its D1/D2/D3
+degradation analysis (`docs/headline-metrics.md`) against one particular incident. Where the
+two genuinely overlap — logging agent-writable channels (GovAI's "Activity logs" item, behind
+`MRFM-D3-1`/`MRFM-D3-2`) and disclosing what an investigation's redactions limit (METR's
+"Redaction summary / disclosure" item, behind `MRFM-CROSS-1`), plus the general reasoning-trace
+retention ask behind `MRFM-D1-1` — MRFM STRENGTHENS the prior ask by adding a specific
+integrity or verification mechanism (hash-chaining, signing, per-claim procedure disclosure,
+contemporaneous flagging) that neither source specifies on its own. But whole regions of the
+table have no real prior-art analogue at all: every D2 clause (self-report corroboration,
+provenance labeling, faithfulness-measurement disclosure — a report-writing epistemics
+question neither source addresses) and three of the four CROSS clauses (revision-changelog
+integrity, machine-readable quotation, third-party-compute retention ownership) sit entirely
+outside what either framework was written to cover.
+
+Read together, this suggests METR's and GovAI's frameworks are necessary but not sufficient
+for the failure modes this specific incident exposed. Where MRFM does sit on an existing
+foundation, the addition is a verification mechanism, not a restatement — so even the
+STRENGTHENS rows are evidence that the underlying ask existed but wasn't independently
+checkable. And where MRFM is NEW, that's not this project inventing requirements for their
+own sake: it's a plain reading of what a 125-row incident ledger surfaced that two of the
+most directly relevant existing frameworks, published before and immediately after this
+incident, did not anticipate.
