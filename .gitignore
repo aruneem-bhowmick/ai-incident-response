@@ -25,6 +25,10 @@ report/*.blg
 report/*.fls
 report/*.fdb_latexmk
 report/*.synctex.gz
+report/*.pdf
+
+# Portable build tooling (downloaded locally, not committed -- see report/BUILD.md)
+.tools/
 
 # Planning docs (internal, not for the public repo)
 planning/
