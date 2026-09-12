@@ -1,0 +1,142 @@
+% =============================================================================
+% Discussion -- draft for P3 (issue #73, closing stress-test Gap B)
+% Sources: docs/rfi-questions.md, mrfm/mrfm-v0.1.md ("Limitations of MRFM
+% v0.1"), docs/prior-art.md sec 1, GitHub issue #45 (points 3 and 6),
+% planning/RESOURCES.md's Track 2 judging criterion (paraphrased below, not
+% quoted -- planning/ is gitignored and not present in this worktree). See
+% report/report.tex lines 117-125 for the placeholder this replaces and its
+% own TODO comment.
+% =============================================================================
+
+\section{Discussion}
+\label{sec:discussion}
+
+This sprint's Track 2 judging criteria reward more than an accurate account
+of what happened: they also look for a causal account that generalizes past
+the single incident under study, one that says something testable about
+future cases rather than only this one. The finding this project is best
+positioned to offer against that bar is the T3 result. Intent-attribution
+claims are the one claim type this ledger's own metrics single out as
+CoT-dependent -- M1 shows 11.1\% of T3 claims (1 of 9) rest solely on raw
+chain-of-thought with no corroborating channel at all, and M2's per-claim-type
+breakdown shows T3 claims surviving the loss of chain-of-thought (D1,
+opacity) at only 22.2\%, against 89--100\% survival for every other claim
+type (Section~\ref{sec:results}). That gap is not an idiosyncrasy of this
+incident, this lab, or this model. It follows from a structural asymmetry in
+what different claim types assert. An event claim (T1) or a mechanism claim
+(T2) asserts something about the world external to the acting system -- a
+timestamp, a file touched, an API called -- and such assertions can, in
+principle, leave independent traces in channels the agent itself did not
+write: host-side logs, cloud-provider audit trails, a second party's own
+record. An intent claim (T3) asserts something about the acting system's
+internal state -- what it judged, and why it chose one action over another
+-- and absent a disclosed, faithful chain-of-thought, internal state leaves
+no such external trace to find. It can only be inferred behaviorally, from
+what the agent did, and behavioral inference is a strictly lower-fidelity
+signal than a contemporaneous, verbalized account of the reasoning itself
+would be. This is a prediction, not just a description: any future agentic
+incident, regardless of which lab or which model produced it, should show
+the same shape -- event and mechanism claims surviving the loss of
+chain-of-thought at rates near this ledger's T1/T2 figures, intent claims
+collapsing toward its T3 figure -- because the asymmetry is a fact about
+what an intent claim structurally is, not a fact about this incident's
+particular evidentiary luck. That is the sense in which this project's
+sharpest finding is not only an audit of one incident's public record, but a
+testable claim about the next one.
+
+This structural asymmetry has a direct corollary once chain-of-thought
+itself stops being treated as a fixed feature of future models. The
+CoT-monitorability-fragility literature already surveyed in Related Work
+(Section~\ref{sec:related-work}) argues that today's externalized,
+human-readable reasoning trace is an emergent property of current training
+methods, not a guarantee: Korbak et al.'s cross-lab position paper names a
+shift toward less monitorable, less verbalized reasoning -- optimizing
+directly against a CoT monitor, or moving toward non-linguistic latent
+reasoning -- as a live risk, and Baker et al. show a version of this already
+happening under direct optimization pressure, where a model taught to evade
+a CoT monitor keeps misbehaving while its trace simply stops describing why.
+Chen et al.'s hint-based faithfulness tests already put verbalization rates
+well below 50\% in some settings even without adversarial pressure on the
+monitor. If the trend these sources describe continues, the T3/M1 dependency
+finding above does not shrink -- it grows. The one channel intent-attribution
+claims currently lean on hardest, imperfectly, is also the channel this
+trend degrades fastest, while the alternative -- behavioral inference from
+actions alone -- gains no corresponding improvement as a window into internal
+state. A world with less monitorable, less verbalized model reasoning is a
+world where this ledger's 22.2\% D1-survival rate for T3 claims looks less
+like a floor for future incidents' intent claims and more like a ceiling.
+
+The eight RFI questions in \texttt{docs/rfi-questions.md} exist so that this
+same channel-fragility finding is not only a description of a problem but
+something a regulator -- or a Track 3 team building governance,
+verification, or enforcement tooling on top of this sprint's output -- can
+act on directly. Each question is anchored to the specific \texttt{claim\_id}s
+where the ledger itself, via a \texttt{verifiability=V3} coding or a
+\texttt{COLLAPSES} verdict under D1, D2, or D3, already flags the public
+record as weakest, rather than to a fresh judgment call made for the RFI
+document itself; and each carries a stated ``what answer would settle this''
+and ``what answer would NOT settle this'' pair, so a recipient's response can
+be checked against a fixed bar instead of read for tone or reassurance
+value. That is exactly the shape of question a regulator needs in hand to
+actually send, rather than a general request for more transparency, and
+exactly the kind of ready-made, evidence-anchored artifact a Track 3 team
+could pick up and operationalize without re-deriving it from the raw
+125-row ledger -- a concrete, checkable question with a stated pass/fail
+bar, which is the other half of what this track's judging criteria reward
+alongside the causal claim above.
+
+A month of follow-up would strengthen the method itself, not just this one
+application of it. Three additions matter most. First, multi-rater coding
+throughout the ledger, rather than the single blind-recode subsample this
+project used to compute Cohen's $\kappa$ per degradation condition
+(Section~\ref{sec:results}; \texttt{docs/reliability-report.md}) -- a full
+second coder on every row would tighten every headline number's confidence
+interval, not just confirm that the codebook survived one spot-check.
+Second, running the same instrument -- codebook, degradation conditions, and
+headline metrics unchanged -- against a second, independent agentic
+incident, to test whether the channel-fragility pattern found here, and the
+T3-specific prediction above in particular, replicates outside this one
+case, or whether this incident's specific mix of disclosed and withheld
+evidence was unusual. Third, piloting the RFI questions in
+\texttt{docs/rfi-questions.md} against an actual regulatory review process,
+or at minimum against feedback from someone who has drafted or received a
+real RFI, to check whether the questions as phrased function as intended
+once someone outside this project tries to use them. (MRFM v0.1's own
+limitations and its own month-of-follow-up list, in
+\texttt{mrfm/mrfm-v0.1.md}, are scoped to the fourteen-clause table
+specifically and are not repeated here.)
+
+Returning to this project's thesis: the best-powered evidence for it is not
+the T3 finding this section leads with structurally, but M5. Across all 125
+claims in the ledger, 78.4\% rest on a primary channel the codebook itself
+ranks as fragile (C1, C2, C3, or C6), and 47.2\% -- just under half of
+everything publicly known about this incident -- rest on such a channel with
+no corroborating channel at all. M1's 11.1\% (n=9) is the sharpest, most
+viscerally specific illustration of the same underlying pattern, and the
+causal argument above is where that pattern's mechanism is easiest to state
+precisely, but M5 is the number that should carry this paper's statistical
+weight when the claim is about the incident's public record as a whole: not
+a fragile statistic about nine claims, but a well-powered one about all of
+them.
+
+In sum: this project set out to measure, rather than assume, how much of the
+public understanding of one agentic-AI incident rests on evidentiary
+channels likely to be absent, unfaithful, or forged next time. The answer is
+a large fraction under any of the cuts this ledger supports; the mechanism
+behind the sharpest slice of that fraction, intent attribution, is
+structural rather than incidental to this incident; and the direction of
+travel in how future models reason makes that mechanism more consequential,
+not less. MRFM v0.1 (Section~\ref{sec:mrfm}) and the RFI questions above are
+this project's answer to what breaks next and what to do before it does;
+whether they hold up is exactly the kind of check the follow-up work above
+is designed to run.
+
+% -----------------------------------------------------------------------------
+% CITE lines -- external works named above beyond those already listed in
+% report/drafts/related-work.tex's own CITE block. Full annotations live in
+% docs/prior-art.md sec 1; reproduced here for the assembly issue's
+% References section.
+% -----------------------------------------------------------------------------
+% CITE: Tomek Korbak, Mikita Balesni, Elizabeth Barnes, et al. (cross-lab position paper), "Chain of Thought Monitorability: A New and Fragile Opportunity for AI Safety," July 2025. https://arxiv.org/abs/2507.11473
+% CITE: Bowen Baker, Joost Huizinga, Leo Gao, Zehao Dou, Melody Y. Guan, Aleksander Madry, Wojciech Zaremba, Jakub Pachocki, David Farhi (OpenAI), "Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation," March 2025. https://arxiv.org/abs/2503.11926
+% CITE: Yanda Chen, Joe Benton, Ansh Radhakrishnan, Jonathan Uesato, Carson Denison, John Schulman, Arushi Somani, et al. (Anthropic), "Reasoning Models Don't Always Say What They Think," May 2025. https://arxiv.org/abs/2505.05410
