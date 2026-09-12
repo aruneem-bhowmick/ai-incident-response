@@ -4,6 +4,11 @@ One entry per PR merged to `main`, newest first, in plain language tied to
 what the change means for Project Warrant (the sprint deliverable) — not a
 raw diff summary.
 
+## 2026-09-12 (P3)
+
+### PR [#79](https://github.com/aruneem-bhowmick/ai-incident-response/pull/79) — Draft the report's Related Work section (closes [#69](https://github.com/aruneem-bhowmick/ai-incident-response/issues/69))
+First P3 report section to land. `report/drafts/related-work.tex` synthesizes `docs/prior-art.md`'s three sweeps — CoT monitorability/faithfulness, agent-forensics/incident-analysis frameworks, and incident-reporting design — into the report's actual Related Work prose, and states the gap this project fills explicitly: no existing framework measures channel-dependence of specific public claims about a specific incident. Sets up the later MRFM diff by naming the GovAI/METR connection here first, so the RESTATES/STRENGTHENS/NEW result doesn't surprise a reader encountering it cold. Fifteen citations, each traced back to a real entry in the prior-art doc.
+
 ## 2026-09-12
 
 ### PR [#65](https://github.com/aruneem-bhowmick/ai-incident-response/pull/65) — Freeze MRFM v0.1 and close Gate G2 (closes [#57](https://github.com/aruneem-bhowmick/ai-incident-response/issues/57), [#49](https://github.com/aruneem-bhowmick/ai-incident-response/issues/49))
