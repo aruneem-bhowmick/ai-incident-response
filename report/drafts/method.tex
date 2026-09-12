@@ -1,0 +1,73 @@
+% =============================================================================
+% Draft for report/report.tex sec:method (lines 80-91 of the current skeleton).
+% Part of the P3 report-writing effort -- issue #70 (p3.1-method).
+% ~650 words. Covers: channel taxonomy, claim types, degradation conditions
+% and verdicts, verifiability tiers, coding procedure, reliability protocol
+% (including the D2 failure and fix), and the R-01-R-07 operating constraints.
+% =============================================================================
+
+\section{Method}
+\label{sec:method}
+
+Every public claim entering the ledger (\texttt{ledger/claims.csv}) is coded on four
+independent axes against a frozen codebook (\texttt{docs/codebook.md}, v1.1), written so
+that a second coder working only from the document and the source text reproduces the
+same codes as the first.
+
+\paragraph{Channel taxonomy and claim types.} Each claim is assigned a primary
+evidentiary channel plus zero or more corroborating channels, drawn from a seven-value
+taxonomy ordered by fragility and agent-writability: C1 (raw chain-of-thought), C2
+(inter-agent messages), C3 (tool-call/action traces), C4 (defender-side telemetry), C5
+(human testimony), C6 (lab assertion with no stated substrate), and UNSTATED (no basis
+given at all). C1--C3 are agent-writable; C4--C5 are independent of the agent under
+investigation. Each claim is also typed by the kind of assertion it makes: T1 (event),
+T2 (mechanism), T3 (intent), T4 (counterfactual), or T5 (assurance). Neither split is
+collapsed: single-channel dependence on the most fragile channel is what the headline
+metrics are built to surface.
+
+\paragraph{Degradation conditions and verdicts.} Every claim is stress-tested against
+three conditions. D1 (opacity) asks whether the claim stays resolvable if its primary
+channel is never logged or disclosed. D2 (unfaithfulness) asks whether the claim's
+warrant survives if the channel's content, though available, is not a reliable report of
+the computation that produced it. D3 (adversarial forgery) asks whether the warrant
+survives given that agent-writable channels may be forged, as the record documents was
+attempted and, in one case, achieved. Each condition receives one of three verdicts --
+SURVIVES, DEGRADED, or COLLAPSES -- each with a one-line paraphrased justification
+recorded in the ledger's corresponding note column.
+
+\paragraph{Outside-verifiability.} Independent of channel and degradation coding, each
+claim is assigned one of three verifiability tiers: V1 (checkable by any third party from
+public artifacts), V2 (checkable only with lab or platform cooperation), or V3 (not
+checkable by any stated procedure). V3 is assigned by definition to any claim -- typically
+a T5 assurance claim -- that states no verification procedure at all; "not checkable" is
+a value in an exhaustive partition, never a blank or N/A.
+
+\paragraph{Coding procedure.} Claims are paraphrased into the ledger, never quoted
+verbatim, for copyright reasons. Each row carries the source organization, URL, and a
+retrieval date, so sourcing is dated rather than assumed stable. A single coder applied
+the frozen codebook, with edge cases resolved by explicit, priority-ordered rules (e.g., a
+fixed fragility ranking breaks primary/corroborating ties) rather than case-by-case
+judgment, so a second coder is expected to land on the same codes.
+
+\paragraph{Reliability protocol.} A 25-row subsample was stripped of its verdicts and
+re-coded cold by a second pass with no access to the original codes, then compared
+against the original via Cohen's $\kappa$ per condition against a pre-registered 0.6 bar.
+D1 ($\kappa=0.7788$) and D3 ($\kappa=0.7794$) passed comfortably. D2 did not
+($\kappa=0.5690$), despite 92\% raw agreement, because the D2 verdict distribution's skew
+toward SURVIVES inflates chance agreement. Diagnosis
+(\texttt{adr/0001-d2-self-report-corroboration.md}) found the codebook let coders reuse
+D1/D3's corroboration-rescues-the-verdict logic for D2, when unfaithfulness can be a
+systematic narration habit rather than a one-off gap: a channel merely repeating the same
+kind of self-reported content, or covering a mismatched scope, does not rescue a D2
+verdict the way it rescues D1 or D3. The fix was logged as a dated ADR, and the ledger's
+entire D2 column was recoded against the corrected rule before the freeze, while D1 and D3
+verdicts were left untouched. This failure-and-fix is reported as a strength, not
+softened: it is the clearest evidence in the project that the reliability check was a real
+test, not a formality, catching a genuine rule gap rather than coder inattention, with the
+fix fully auditable in the diff between codebook versions.
+
+\paragraph{Operating constraints.} The instrument runs under seven numbered requirement
+rules (R-01 through R-07) that keep the coding auditable and replicable, covering source
+retrieval-dating, channel-taxonomy assignment, script-computed metrics, blinded
+reliability reporting, MRFM clause verifiability, no reproducible tamper or spoof
+technique, and dated-ADR logging of any post-freeze codebook change.
