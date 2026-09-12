@@ -6,6 +6,12 @@ raw diff summary.
 
 ## 2026-09-12 (P3)
 
+### Fixed a stale table in `docs/headline-metrics.md` — direct commit `3318f04`
+Two independent P3 subagents (Results, LessWrong scaffold) both noticed and worked around the same bug while sourcing numbers: the M2-by-claim-type table carried pre-freeze 116-row figures (T1 n=53, T2 n=38, 89.7% overall) even though this same doc's own §2 script output was already correct at 125 rows. Fixed directly on `main` rather than routing through another PR — a documentation correction with no analytical content change, independently re-verified against a live script run and a fresh ledger read before committing.
+
+### PR [#90](https://github.com/aruneem-bhowmick/ai-incident-response/pull/90) — Draft a LessWrong-post fact scaffold from the finished report (closes [#78](https://github.com/aruneem-bhowmick/ai-incident-response/issues/78))
+DL-9's reference material, optional and done with time to spare before the deadline. `docs/lesswrong-post-scaffold.md` collects every fact, number, and source link a LessWrong write-up would need — title options, an honest epistemic-status line pulled straight from the report's own Limitations appendix, and a paragraph-by-paragraph outline — but deliberately contains no publishable prose, per the sprint's stricter rule against LLM-drafted LessWrong content. The actual post is still Aruneem's to write personally.
+
 ### PR [#89](https://github.com/aruneem-bhowmick/ai-incident-response/pull/89) — Freeze the submission package and confirm P3 is ready to ship (closes [#77](https://github.com/aruneem-bhowmick/ai-incident-response/issues/77))
 Walked the sprint's full pre-submission checklist against the actual repo state: all 6 items pass, independently re-verifying the abstract's word count (149) and the report's page count (24 total, 7-8 pages of body) rather than trusting the assembly PR's own numbers on faith. Fixed one stale README line that still called the report "forthcoming." Flagged two things for Aruneem's personal judgment rather than fixing them outright: the report has no LLM Usage Statement despite the project's heavy Claude Code workflow, and the Introduction's regulatory-timeline sentence (EU/California/New York/federal dates) has no citation anywhere in the repo. Ends with an explicit go: "Ready for Aruneem to submit personally via the official sprint submission form."
 
