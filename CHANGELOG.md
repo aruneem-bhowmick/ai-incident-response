@@ -6,6 +6,15 @@ raw diff summary.
 
 ## 2026-09-12 (P3)
 
+### PR [#83](https://github.com/aruneem-bhowmick/ai-incident-response/pull/83) — Draft the Limitations and Dual-Use Considerations appendix (closes [#74](https://github.com/aruneem-bhowmick/ai-incident-response/issues/74))
+DL-7, the sprint's required appendix, drafted in full. Updates the sprint plan's original Limitations/Dual-Use draft with five caveats that accumulated after that draft was written: the single-coder-plus-blind-recode reliability posture (with the actual κ numbers, including D2's fix), the asserted-corroboration ceiling on M2 restated as a formal limitation, the small-N caveats on M1 (n=9) and T4 (n=2), and the residual lw-01/lw-02 category-level-only gap. Dual-Use keeps the plan's original framing — no reproducible tamper/spoof technique published (R-06), and an explicit statement declining to reproduce the documented spoofing technique despite it appearing in a public source.
+
+### PR [#82](https://github.com/aruneem-bhowmick/ai-incident-response/pull/82) — Draft the report's Introduction section (closes [#68](https://github.com/aruneem-bhowmick/ai-incident-response/issues/68))
+States the project's thesis and contributions, leading with the well-powered M5 finding (78.4% of all 125 claims rest on a codebook-fragile channel, 47.2% with none at all) rather than the flashier but thin M1 statistic (11.1%, n=9) — the framing `docs/report-title-candidates.md` recommended. Introduces the T3/chain-of-thought dependency as the sharpest specific instance of the broader pattern, with its small sample size flagged the first time it's mentioned.
+
+### PR [#81](https://github.com/aruneem-bhowmick/ai-incident-response/pull/81) — Clean up repo hygiene — add a licence and a real README (closes [#75](https://github.com/aruneem-bhowmick/ai-incident-response/issues/75))
+DL-8 done. Added an MIT `LICENSE` and rewrote the one-line `README.md` stub into a real project overview linking every key artifact (ledger, codebook, headline metrics, MRFM v0.1, RFI questions). Also carries the disqualification-risk disclosure the sprint plan requires: everything in `ledger/`, `docs/`, `mrfm/`, `adr/`, and the report was built during the sprint window (10-13 Sep 2026) — the only thing that predates it is the general-purpose spec-driven execution method, not any sprint-specific content.
+
 ### PR [#80](https://github.com/aruneem-bhowmick/ai-incident-response/pull/80) — Resolve the LaTeX/PDF build path for the report (closes [#67](https://github.com/aruneem-bhowmick/ai-incident-response/issues/67))
 Closed Gap A from the 2026-09-12 stress test: this machine had no LaTeX toolchain installed at all. Rather than a multi-gigabyte system-wide TeX install, downloaded the portable Tectonic engine into a repo-local, gitignored path (`.tools/tectonic.exe`) — no admin rights, no PATH changes, fully reversible. Smoke-tested against the still-placeholder `report/report.tex` skeleton and it compiled clean. `report/BUILD.md` now has the exact working command plus a documented Overleaf fallback, so producing the final `report.pdf` is a solved problem well before the report's content is finished.
 
