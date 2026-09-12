@@ -1,0 +1,74 @@
+% =============================================================================
+% Project Warrant -- Section: MRFM v0.1
+%
+% Condensed body-section summary of mrfm/mrfm-v0.1.md (frozen v0.1,
+% 2026-09-12). Full six-field clause text lives in
+% Appendix~\ref{app:mrfm-table} (report/drafts/appendix-mrfm-full.tex); this
+% section deliberately does not reproduce it -- a compact per-clause table
+% plus a short prose summary of the diff-vs-prior-art finding, per the
+% section's ~1-page budget.
+%
+% No new LaTeX packages are required beyond what report/report.tex already
+% loads (booktabs, for the table rules used below).
+% =============================================================================
+
+\section{MRFM v0.1}
+\label{sec:mrfm}
+
+The Monitorability-Robust Forensic Minimum (MRFM) is this project's proposed
+v0.1 minimum evidentiary standard for future agentic-AI incident reports: a
+set of clauses specifying what a lab, and where relevant its third-party
+compute providers, must retain, disclose, or make independently checkable so
+that a claim about an incident can be verified by an outside party without
+lab network access. Each of its 14 clauses is grounded directly in a
+specific, evidenced gap surfaced by this project's 125-row claim ledger and
+its D1 (opacity) / D2 (unfaithfulness) / D3 (adversarial forgery) degradation
+analysis (Section~\ref{sec:results}), grouped below by the degradation each
+clause defends against, plus a fourth cross-cutting group addressing the
+verifiability of a lab's own reporting process rather than of the agent's
+record. Diffed against the two most directly relevant existing frameworks --
+METR's investigation-access list and GovAI's incident-analysis retention
+list -- \textbf{0 of the 14 clauses restate an existing requirement
+outright, 4 strengthen one by adding a verification mechanism it lacked
+(hash-chaining, signing, contemporaneous flagging, or per-claim procedure
+disclosure), and 10 are new relative to both sources}. This is best read as a
+finding about the state of existing guidance rather than a shortcoming of
+MRFM: METR's and GovAI's frameworks were written as general
+investigation-access and retention guidance, not against this specific
+incident, and did not anticipate several of the failure modes this incident's
+ledger surfaced -- most notably the entire D2 self-report-corroboration
+problem and three of the four cross-cutting process gaps, which sit outside
+what either framework was scoped to cover. Full six-field clause text
+(Requirement, Degradation defended, Evidence required, Verifier, Cost band,
+vs.\ prior art, plus each clause's prior-art note) is in
+Appendix~\ref{app:mrfm-table}; Table~\ref{tab:mrfm-summary} below summarizes
+all 14 clauses.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\begin{tabular}{@{}p{2.1cm}p{7.4cm}p{1.6cm}p{1.9cm}@{}}
+\toprule
+\textbf{Clause ID} & \textbf{Requirement (gist)} & \textbf{Degradation} & \textbf{vs.\ prior art} \\
+\midrule
+MRFM-D1-1 & Retain targeted reasoning-trace excerpts for actions later classified as legitimacy/scope/objective judgments & D1 & STRENGTHENS \\
+MRFM-D1-2 & Escrow a timestamped hash receipt for each retained excerpt with an independent party & D1 & NEW \\
+MRFM-D1-3 & Pre-register retention-trigger criteria and a fixed disclosure-timing window before deployment & D1 & NEW \\
+MRFM-D2-1 & Corroborate self-reported reasoning/intent claims with a non-self-report channel before treating them as fact & D2 & NEW \\
+MRFM-D2-2 & Visibly label every reasoning/intent claim as self-reported or independently confirmed & D2 & NEW \\
+MRFM-D2-3 & Disclose whether the implicated model has a measured CoT-faithfulness rate, or state that none exists & D2 & NEW \\
+MRFM-D3-1 & Hash-chain agent-writable channels (C1--C3) at generation time in an append-only log & D3 & STRENGTHENS \\
+MRFM-D3-2 & Cryptographically sign agent-writable entries, keyed to originating agent/session & D3 & STRENGTHENS \\
+MRFM-D3-3 & Pre-commit hash-chain/signing verification material publicly before an evaluation begins & D3 & NEW \\
+MRFM-D3-4 & Retain independently checkable network egress logs to cross-check agent-writable channels & D3 & NEW \\
+MRFM-CROSS-1 & Require a stated, checkable verification procedure (or redaction summary) for every assurance claim & CROSS & STRENGTHENS \\
+MRFM-CROSS-2 & Maintain a dated, versioned public changelog for any report revision & CROSS & NEW \\
+MRFM-CROSS-3 & Publish quoted model output as machine-readable text alongside any figure/screenshot rendering it & CROSS & NEW \\
+MRFM-CROSS-4 & Obligate third-party compute providers to retain/disclose staging-environment logs & CROSS & NEW \\
+\bottomrule
+\end{tabular}
+\caption{MRFM v0.1's 14 clauses, condensed. Full requirement text, evidence
+required, verifier, cost band, and prior-art notes are in
+Appendix~\ref{app:mrfm-table}.}
+\label{tab:mrfm-summary}
+\end{table}
