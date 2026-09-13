@@ -6,7 +6,7 @@ raw diff summary.
 
 ## 2026-09-12 (P3)
 
-### Fixed a stale table in `docs/headline-metrics.md` — direct commit `3318f04`
+### Fixed a stale table in `docs/headline-metrics.md` — direct commit `593a15f`
 Two independent P3 subagents (Results, LessWrong scaffold) both noticed and worked around the same bug while sourcing numbers: the M2-by-claim-type table carried pre-freeze 116-row figures (T1 n=53, T2 n=38, 89.7% overall) even though this same doc's own §2 script output was already correct at 125 rows. Fixed directly on `main` rather than routing through another PR — a documentation correction with no analytical content change, independently re-verified against a live script run and a fresh ledger read before committing.
 
 ### PR [#90](https://github.com/aruneem-bhowmick/ai-incident-response/pull/90) — Draft a LessWrong-post fact scaffold from the finished report (closes [#78](https://github.com/aruneem-bhowmick/ai-incident-response/issues/78))
@@ -73,7 +73,7 @@ Start of P2 (drafting the v0.1 forensic-minimum standard, MRFM). Three clauses (
 
 ## 2026-09-11
 
-### Direct commits `db875f2`, `ac7f2d9` — Re-freeze the ledger at v1.2 after the lw-01/lw-02 addition
+### Direct commits `d928e0c`, `3a4827d` — Re-freeze the ledger at v1.2 after the lw-01/lw-02 addition
 Merging the lw-retry PR below required follow-up: D-coded the 9 new rows (all trivially `SURVIVES` on D1-D3, since all rest solely on `C5`), refreshed M1-M5 for the new 125-row ledger (M3 and M5 both moved slightly toward *less* dramatic — evidence the original numbers weren't inflated by omission), updated the freeze statement in `docs/headline-metrics.md` and `ledger/schema.md`'s changelog to record the ledger passed through v1.1 (116 rows) before settling at v1.2 (125 rows), and refreshed the numbers quoted in the title-candidates doc to match.
 
 ### PR [#48](https://github.com/aruneem-bhowmick/ai-incident-response/pull/48) — Retry lw-01/lw-02 with a narrow, category-only pass (closes [#43](https://github.com/aruneem-bhowmick/ai-incident-response/issues/43))
@@ -88,7 +88,7 @@ The project's four official metrics only treat raw chain-of-thought (M1) or agen
 ### PR [#44](https://github.com/aruneem-bhowmick/ai-incident-response/pull/44) — Draft working-title candidates for the report
 The sprint plan's own working title ("Warranted by One Channel...") would overclaim once M1/M2 were in hand — the record survives CoT opacity at ~90% overall, so a title implying broad collapse doesn't match the data. Three candidates drafted with an explicit tradeoff (a dramatic-but-n=9 framing vs. a less viscerally specific but n=125-powered framing), left open for a P3 decision rather than picked here.
 
-### Direct commit `16ece7a` and PR [#40](https://github.com/aruneem-bhowmick/ai-incident-response/pull/40) — Freeze the ledger at v1.1 and record headline metrics (closes [#30](https://github.com/aruneem-bhowmick/ai-incident-response/issues/30), [#19](https://github.com/aruneem-bhowmick/ai-incident-response/issues/19))
+### Direct commit `56b3892` and PR [#40](https://github.com/aruneem-bhowmick/ai-incident-response/pull/40) — Freeze the ledger at v1.1 and record headline metrics (closes [#30](https://github.com/aruneem-bhowmick/ai-incident-response/issues/30), [#19](https://github.com/aruneem-bhowmick/ai-incident-response/issues/19))
 Gate G1 met. Final M1-M4 recorded in `docs/headline-metrics.md`: M1 (CoT monopoly) 11.1%, M2 (record survival under opacity) 89.7% overall — but split by claim type, T1 and T4 survive at 100% while T3 (intent) collapses to 22.2%, confirming half of the plan's own prediction and contradicting the other half (T4 was predicted not to survive). M3 (forgery exposure) 9.5%, M4 (assurance gap) 57.1%. Per the plan's own instruction, no further edits to the ledger from here — this closes out the whole P1 phase.
 
 ### PR [#39](https://github.com/aruneem-bhowmick/ai-incident-response/pull/39) — Fix codebook D2 rule and recode the ledger (closes [#29](https://github.com/aruneem-bhowmick/ai-incident-response/issues/29))
@@ -103,13 +103,13 @@ A fresh agent coded all three degradation conditions on the 25-row subsample fro
 ### PR [#36](https://github.com/aruneem-bhowmick/ai-incident-response/pull/36) — Prepare the blind re-code subsample and answer key (closes [#26](https://github.com/aruneem-bhowmick/ai-incident-response/issues/26))
 Sampled 25 rows (seed 42) for the reliability check, naturally drawing 6 T5 (assurance) rows — well above the minimum needed to actually stress-test the rarest, highest-stakes claim type. Split the sample into a stripped version (committed, degradation columns removed) and an answer key written to a sibling directory outside the repo entirely, verified invisible to `git status` from inside it.
 
-### Direct commit `c1f4f1c` — Consolidate group A-D degradation verdicts into the ledger (closes [#25](https://github.com/aruneem-bhowmick/ai-incident-response/issues/25))
+### Direct commit `ddec355` — Consolidate group A-D degradation verdicts into the ledger (closes [#25](https://github.com/aruneem-bhowmick/ai-incident-response/issues/25))
 Merged the four parallel D-coding passes below into `ledger/claims.csv` by `claim_id` (verified 116/116 exact match, no gaps or duplicates). M2 became real for the first time here: 89.7% overall opacity-survival, with the T1/T4-vs-T3 split noted above already visible at this stage.
 
 ### PRs [#31](https://github.com/aruneem-bhowmick/ai-incident-response/pull/31)-[#35](https://github.com/aruneem-bhowmick/ai-incident-response/pull/35) — D1/D2/D3 coding for ledger groups A-D, and the Cohen's kappa script (closes [#20](https://github.com/aruneem-bhowmick/ai-incident-response/issues/20)-[#24](https://github.com/aruneem-bhowmick/ai-incident-response/issues/24))
 The start of P1: five independent, unblocked tasks run in parallel. The four D-coding passes (PR #34 group A, #33 group B, #35 group C, #32 group D) each wrote to their own narrow file rather than editing the shared ledger directly, avoiding the conflict risk P0 hit; several surfaced genuinely hard judgment calls worth remembering — group A deliberately favored the codebook's spirit over strict channel-literalism on its two T3 rows, group C flagged a self-referential problem in METR's own forgery-detection claims (a successful forgery would, by construction, never appear as a "confirmed case"), and group B explicitly noted a case where the channel-based test doesn't capture a claim's real weakness. PR #31 (kappa script) validated Cohen's kappa against three hand-worked cases before anything downstream depended on it.
 
-### Direct commit `8bfe4e1` — Consolidate excerpt inventory and add lw-01/lw-02 ledger rows (closes [#5](https://github.com/aruneem-bhowmick/ai-incident-response/issues/5), [#6](https://github.com/aruneem-bhowmick/ai-incident-response/issues/6))
+### Direct commit `ba21aad` — Consolidate excerpt inventory and add lw-01/lw-02 ledger rows (closes [#5](https://github.com/aruneem-bhowmick/ai-incident-response/issues/5), [#6](https://github.com/aruneem-bhowmick/ai-incident-response/issues/6))
 Rolled the four per-group excerpt inventories (below) into the single `docs/excerpt-inventory.md` the task required: ~154 verbatim excerpts established across 15 of 17 sources, a note reconciling which OAI-05/METR-02 excerpts corroborate the same underlying events despite being independently quoted, and a "go" verdict on excerpt-level analysis with the caveat that the material is heavily concentrated in a few curated documents. Also hand-added two ledger rows for the two LessWrong sources no agent could process in detail (see below) — coded only at the safe, already-public abstraction level already in `sources/manifest.csv`, not from their raw content.
 
 **Context for everything below:** the ledger (#5) and excerpt-inventory (#6) tasks each initially failed as one large job — a cybersecurity-content safety classifier block on exploit-heavy sources, plus repeated transient stream/hang failures on the full-scope run. Both were split into four source-group chunks (A: Hugging Face, B: OpenAI, C: METR/Redwood/Anthropic/UK AISI, D: collusion.wiki/LessWrong) with pre-assigned non-overlapping `claim_id` ranges, run in parallel, then consolidated by hand-merging the resulting conflicts.
@@ -140,7 +140,7 @@ Found zero chain-of-thought or inter-agent-message excerpts in either Hugging Fa
 
 ## 2026-09-10
 
-### Restored `.gitignore` exclusion for `planning/` — direct commit `8fd16a8`
+### Restored `.gitignore` exclusion for `planning/` — direct commit `08e09d5`
 The scaffold PR below accidentally rewrote `.gitignore` and dropped the line
 keeping the internal `planning/` directory (sprint overview, resources,
 guidelines, and the execution plan) out of the public repo. Restored
