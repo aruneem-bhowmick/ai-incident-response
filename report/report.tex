@@ -64,11 +64,22 @@ weakest vanish or prove unreliable. This project does.
 The question is urgent now. This incident's evidentiary base is exceptional
 -- detailed forensic reconstructions, an interactive replay, large-scale
 evaluation reviews -- but perishable; that level of disclosure need not
-recur. The regulatory window is open: the EU Commission gained
-enforcement powers over general-purpose AI providers on 2 August 2026,
-California's frontier AI law has been operative since January 2026, New
-York's enforcement begins January 2027, and four U.S. federal bills are
-live, at least one drafted in response to this incident.
+recur. The regulatory window is open: the EU Commission gained enforcement
+powers over general-purpose AI providers on 2 August 2026 under Article 55
+of the AI Act,\footnote{Regulation (EU) 2024/1689, Article 55.
+\url{https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng}} California's
+frontier AI law has been operative since January 2026,\footnote{California
+SB 53, the Transparency in Frontier Artificial Intelligence Act (2025).
+\url{https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB53}}
+New York's enforcement begins January 2027,\footnote{New York RAISE Act,
+S6953-B / A6453-B (2025).
+\url{https://www.nysenate.gov/legislation/bills/2025/S6953/amendment/B}} and
+four U.S. federal bills are live, at least one drafted in response to this
+incident.\footnote{H.R. 9477, AI Incident Reporting Act, 119th Congress
+(2025--2026), is the bill most directly responsive to this incident; the
+other three are the AI Kill Switch Act, the Great American AI Act discussion
+draft, and the Secure AI Development Act.
+\url{https://www.congress.gov/bill/119th-congress/house-bill/9477}}
 
 The incident: in July 2026, two OpenAI models running an internal
 cyber-capability evaluation, with production refusal classifiers disabled,
@@ -318,6 +329,28 @@ any-degradation figure captures every T3 claim that loses \emph{some}
 precision the moment chain-of-thought is unavailable, which is the more
 complete picture of T3's dependence on that one channel.
 
+\subsection*{M5, decomposed: lab assertion versus agent-writable content}
+
+M5's fragile set spans two mechanically different kinds of weakness: C1--C3
+(agent-writable -- content the acting agent itself could author, alter, or
+fabricate) and C6 (a lab assertion with no stated substrate -- a generic
+transparency gap common to any institutional report, not one specific to
+an acting AI agent). Collapsing them into one figure is useful for the
+broadest reading of the thesis, but it also means M5's headline number is
+not driven mainly by the mechanism -- agent forgery -- that motivates D3 and
+M1/M3. Decomposed directly from \texttt{ledger/claims.csv}: C6 alone is 60 of
+125 claims (48.0\%) and makes up 60 of the 98 claims in M5's fragile-primary
+numerator (61\%); C1--C3 together, regardless of corroboration, are 38 of 125
+claims (\textbf{30.4\%}). Three honest cuts of the same ledger therefore
+answer three different questions: \textbf{8.8\%} (M3 -- agent-writable
+\emph{and} uncorroborated), \textbf{30.4\%} (agent-writable regardless of
+corroboration), and \textbf{78.4\%} (M5 -- agent-writable \emph{or}
+unsubstantiated lab assertion). The forgery-specific reading of this
+project's thesis is better represented by the first two than by the
+C6-inclusive third; we report all three so a reader can pick the cut that
+matches the specific claim they want to make, rather than only the largest
+number available.
+
 \subsection*{Reliability}
 
 Reliability was checked by a 25-row blind recode against Cohen's $\kappa$ per
@@ -545,7 +578,12 @@ causal argument above is where that pattern's mechanism is easiest to state
 precisely, but M5 is the number that should carry this paper's statistical
 weight when the claim is about the incident's public record as a whole: not
 a fragile statistic about nine claims, but a well-powered one about all of
-them.
+them. That said, M5's numerator is itself majority C6 (lab assertion), not
+agent-writable content (Section~\ref{sec:results}'s decomposition); the
+forgery-specific version of this claim rests on the narrower 30.4\% figure,
+still well-powered relative to M1, and it is that narrower number, not the
+C6-inclusive 78.4\%, that should be quoted wherever the claim being made is
+specifically about content an acting agent could fabricate.
 
 In sum: this project set out to measure, rather than assume, how much of the
 public understanding of one agentic-AI incident rests on evidentiary
@@ -1064,5 +1102,38 @@ corroboration rule and triggered a full recode of the ledger's D2 columns).
 The full codebook, including every edge-case rule referenced above, is at
 \texttt{docs/codebook.md} in the repository linked in
 Appendix~\ref{app:ledger}.
+
+% -----------------------------------------------------------------------------
+\section{LLM Usage Statement}
+\label{app:llm-usage}
+
+This solo project used Claude Code throughout execution: archiving and
+retrieval-dating primary sources, coding ledger rows against the frozen
+codebook, computing the headline metrics and reliability statistics by
+script, drafting MRFM v0.1's clauses and the RFI questions, and drafting this
+report's section text from the frozen ledger, codebook, and metrics output.
+Every unit of work was scoped as a single pull request (\texttt{CHANGELOG.md}
+records each one individually, newest first, in plain language) and merged
+by the author one at a time rather than in bulk, which is also what makes
+the specific corrections visible in this report's own text possible to
+trace -- e.g., the D2 reliability failure and its ADR-logged fix
+(Section~\ref{sec:method}), the stale-table correction noted in
+\texttt{CHANGELOG.md}'s 2026-09-12 entries, and the M5 decomposition added
+in Section~\ref{sec:results}.
+
+What this project does not do: no claim, metric, or verdict in the ledger,
+the codebook, MRFM, the RFI questions, or this report was generated without
+a check against a primary source, a script, or the frozen coding rules.
+Every number in Section~\ref{sec:results} is reproducible by running
+\texttt{python scripts/metrics.py} against the frozen ledger; the
+reliability numbers in the same section are reproducible by running
+\texttt{python scripts/kappa.py} against the two files named in
+\texttt{docs/reliability-report.md}. Analytical judgment calls -- which
+channel is primary on a tie, how a contested claim is typed, whether a
+degradation verdict survives a specific corroborating channel -- were made
+against the codebook's written rules (Appendix~\ref{app:codebook}), not
+left to unstated model discretion; where the rules themselves proved
+underspecified (the D2 reliability failure), the fix is logged as a dated
+ADR rather than silently recoded, per requirement R-07.
 
 \end{document}
