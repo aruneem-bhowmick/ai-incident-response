@@ -16,7 +16,7 @@ or TeX Live install anywhere on it.
 LaTeX engine binary. It needs no separate TeX Live/MiKTeX install: on first
 compile it fetches only the specific packages/fonts a given document actually
 uses from a CTAN-mirroring bundle server, and caches them locally for reuse.
-That makes it the least invasive option available — no multi-gigabyte
+That makes it the least invasive option available: no multi-gigabyte
 system-wide install, nothing added to `PATH`, nothing outside this repo.
 
 ## One-time setup
@@ -27,7 +27,7 @@ system-wide install, nothing added to `PATH`, nothing outside this repo.
    asset `tectonic-<version>-x86_64-pc-windows-msvc.zip`.
 2. Unzip it and place `tectonic.exe` at `.tools/tectonic.exe` (repo root).
    This path is gitignored (see `.gitignore`, "Portable build tooling")
-   precisely so it's never committed — every contributor fetches their own
+   precisely so it's never committed; every contributor fetches their own
    copy.
 3. Verify it runs:
 
@@ -50,15 +50,15 @@ root:
 This produces `report/report.pdf`. On the very first run, Tectonic needs
 network access to fetch the LaTeX packages/fonts the document uses
 (`article` class, `geometry`, `hyperref`, `booktabs`, `graphicx`,
-`enumitem`, plus their dependencies and Latin Modern fonts) — expect it to
+`enumitem`, plus their dependencies and Latin Modern fonts); expect it to
 print a long list of `note: downloading ...` lines. Those are cached
 afterwards (Tectonic's bundle cache, outside the repo), so subsequent
 compiles are fast and offline-capable.
 
 `report/*.pdf` is gitignored, matching the rest of the LaTeX build artifacts
-already ignored in `.gitignore` — the compiled PDF is a build output, not a
-tracked file. Regenerate it with the command above whenever you need it
-(e.g. right before submission).
+already ignored in `.gitignore`, with one exception: `report/report.pdf`
+itself is committed, since it is the actual deliverable (DL-6), not a build
+byproduct. Regenerate it with the command above whenever you need to.
 
 ### Confirmed smoke test (2026-09-12)
 
@@ -68,13 +68,13 @@ Result: **pass**. Tectonic downloaded its package bundle, ran the TeX engine
 (one rerun triggered automatically because `report.out` changed, which is
 normal `hyperref`/TOC behavior, not an error), and wrote a valid
 `report/report.pdf` (~36 KB, PDF 1.5). Only warning emitted was a single
-harmless `Overfull \hbox (1.45482pt too wide)` at report.tex:133-134 — not
+harmless `Overfull \hbox (1.45482pt too wide)` at report.tex:133-134, not
 fatal, and expected to change once real content replaces the placeholder
 text. No errors.
 
 ## Fallback: Overleaf (no local compile possible)
 
-Not needed in this environment — the Tectonic path above worked — but
+Not needed in this environment (the Tectonic path above worked), but
 documented here in case a future environment can't run a downloaded binary
 (no internet egress, execution restricted, etc.):
 
@@ -86,8 +86,8 @@ documented here in case a future environment can't run a downloaded binary
 3. Set the project's compiler to **pdfLaTeX** (Menu -> Compiler -> pdfLaTeX).
    `report.tex` only uses the standard `article` class plus `geometry`,
    `hyperref`, `booktabs`, `graphicx`, and `enumitem`, all of which are
-   available by default in Overleaf's TeX Live install — no extra package
-   setup needed.
+   available by default in Overleaf's TeX Live install, so no extra package
+   setup is needed.
 4. Compile (Overleaf compiles automatically on save, or click "Recompile").
 5. Download the resulting PDF (Menu -> Download PDF, or the download icon
    above the preview pane).
@@ -102,5 +102,5 @@ Run this from the repo root once `report/report.tex` has real content:
 
 If `.tools/tectonic.exe` isn't present, re-fetch it per "One-time setup"
 above (takes under a minute; the binary is ~50 MB). If for any reason a
-local compile can't be made to work, use the Overleaf fallback above — it is
+local compile can't be made to work, use the Overleaf fallback above. It is
 a real, actionable path, not a dead end.

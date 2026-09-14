@@ -7,7 +7,7 @@ actually rests on. Its thesis: public understanding of the incident is dispropor
 warranted by the single evidentiary channel most likely to disappear or be forged next
 time, and that dependency is measurable. To test that, every public claim about the
 incident was extracted, coded against a fixed codebook, and stress-tested against three
-degradation conditions — D1 opacity (the channel disappears or is withheld), D2
+degradation conditions: D1 opacity (the channel disappears or is withheld), D2
 unfaithfulness (the channel's content misrepresents the underlying process), and D3
 adversarial forgery (the channel's content could have been tampered with). That produced
 a frozen 125-row claim ledger, five headline metrics summarizing how much of the public
@@ -18,26 +18,27 @@ weakest.
 
 ## Key artifacts
 
-- **Claim ledger** — [`ledger/claims.csv`](ledger/claims.csv) (125 rows, frozen v1.2),
+- **Claim ledger**: [`ledger/claims.csv`](ledger/claims.csv) (125 rows, frozen v1.2),
   documented by [`ledger/schema.md`](ledger/schema.md).
-- **Codebook** — [`docs/codebook.md`](docs/codebook.md), the controlled-vocabulary coding
+- **Codebook**: [`docs/codebook.md`](docs/codebook.md), the controlled-vocabulary coding
   standard (claim types, evidentiary channels, degradation verdicts, verifiability tiers)
   the ledger is coded against.
-- **Headline metrics** — [`docs/headline-metrics.md`](docs/headline-metrics.md), five
+- **Headline metrics**: [`docs/headline-metrics.md`](docs/headline-metrics.md), five
   metrics (M1-M5) computed by script from the frozen ledger, quantifying CoT monopoly,
   record survival under opacity, forgery exposure, the assurance gap, and overall claim
   fragility.
-- **MRFM v0.1** — [`mrfm/mrfm-v0.1.md`](mrfm/mrfm-v0.1.md), the Monitorability-Robust
+- **MRFM v0.1**: [`mrfm/mrfm-v0.1.md`](mrfm/mrfm-v0.1.md), the Monitorability-Robust
   Forensic Minimum: 14 clauses specifying what a lab (and its third-party compute
   providers) should retain, disclose, or make independently checkable so incident claims
   can be verified without lab network access.
-- **RFI questions** — [`docs/rfi-questions.md`](docs/rfi-questions.md), draft
+- **RFI questions**: [`docs/rfi-questions.md`](docs/rfi-questions.md), draft
   request-for-information questions derived directly from the ledger rows where the
   public record is weakest (`verifiability == V3` or any degradation-verdict
   `COLLAPSES`).
-- **Report** — [`report/report.pdf`](report/report.pdf), the final compiled submission (24
-  pages total, 7-8 pages of body content excluding references/appendices). LaTeX source at
-  [`report/report.tex`](report/report.tex); build instructions in
+- **Report**: [`report/report.pdf`](report/report.pdf), the final compiled submission
+  ("Project Warrant: On Evidentiary Channel Dependency in a Frontier AI Incident
+  Record," 12 pages total, 8 pages of core content plus references and appendix).
+  LaTeX source at [`report/report.tex`](report/report.tex); build instructions in
   [`report/BUILD.md`](report/BUILD.md).
 
 Supporting materials: the source manifest and archived primary sources
@@ -56,12 +57,12 @@ existed before the sprint began.
 The **only** thing that predates the sprint is the execution *method* used to produce
 this repo: a spec-driven workflow, run with Claude Code, that scaffolds a repo layout up
 front and then dispatches parallel work to one isolated git worktree per subagent per
-task. That is the author's standing, habitual way of working on any project — it is not
-sprint-specific prior art, and it is not an undisclosed pre-built instrument. No
+task. That is the author's standing, habitual way of working on any project, not
+sprint-specific prior art, and not an undisclosed pre-built instrument. No
 incident-specific analysis, ledger content, codebook rules, or MRFM clauses were carried
 in from outside the sprint window; only the general-purpose execution scaffolding
 predates it.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE).
+MIT. See [`LICENSE`](LICENSE).
