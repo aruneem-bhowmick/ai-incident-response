@@ -4,6 +4,12 @@ One entry per PR merged to `main`, newest first, in plain language tied to
 what the change means for Project Warrant (the sprint deliverable) — not a
 raw diff summary.
 
+## 2026-09-14
+
+### PRs [#91](https://github.com/aruneem-bhowmick/ai-incident-response/pull/91)-[#98](https://github.com/aruneem-bhowmick/ai-incident-response/pull/98) — Copyedit the repo's remaining submission-grade documentation
+
+A final proofreading pass over every document besides the report itself that a judge might read: the repo-orientation docs (README, PRIMER, IMPLEMENTATION, BUILD, title candidates), the codebook, headline-metrics and reliability-report, MRFM v0.1, the RFI questions, the ledger schema and ADR 0001, the prior-art bibliography, and all five excerpt-inventory files. Tightened phrasing and punctuation throughout; left every number, citation, claim ID, controlled-vocabulary term, and quoted excerpt untouched, verified line by line against the pre-edit version of each file.
+
 ## 2026-09-12 (P3)
 
 ### Fixed a stale table in `docs/headline-metrics.md` — direct commit `593a15f`
