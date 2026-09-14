@@ -1,15 +1,15 @@
-# MRFM v0.1 — Monitorability-Robust Forensic Minimum
+# MRFM v0.1: Monitorability-Robust Forensic Minimum
 
-**v0.1 — frozen 2026-09-12**
+**v0.1, frozen 2026-09-12**
 
-**Project:** Project Warrant — a solo audit, for the Apart Research × CeSIA AI Incident
+**Project:** Project Warrant, a solo audit, for the Apart Research × CeSIA AI Incident
 Response Sprint (Track 2), of which evidentiary channel each public claim about the July
 2026 OpenAI/Hugging Face agent-escape incident actually rests on. MRFM is this project's
 proposed minimum evidentiary standard for future agentic-AI incident reports: a set of
 clauses specifying what a lab (and, where relevant, its third-party compute providers)
 must retain, disclose, or make independently checkable so that a claim about an incident
-can be verified by an outside party without lab network access. **This is v0.1** — a
-first consolidated draft, not a final standard — and every clause below is grounded in a
+can be verified by an outside party without lab network access. **This is v0.1**, a
+first consolidated draft, not a final standard, and every clause below is grounded in a
 specific, evidenced gap found against this project's 125-row claim ledger
 (`ledger/claims.csv`, v1.2) and the coding rules that produced it (`docs/codebook.md`),
 which between them define the claim types (T1-T5), evidentiary channels (C1-C6), and
@@ -19,13 +19,13 @@ clauses below reference throughout.
 ## Consolidation notes
 
 This document merges four parallel clause-drafting passes (`MRFM-D1-*`, `MRFM-D2-*`,
-`MRFM-D3-*`, `MRFM-CROSS-*` — P2, issues #51-#53 and the cross-cutting pass), each
+`MRFM-D3-*`, `MRFM-CROSS-*`; P2, issues #51-#53 and the cross-cutting pass), each
 targeting one degradation condition or the cross-cutting reporting process. The four
 source drafts (`mrfm/clauses-draft-d1.md`, `-d2.md`, `-d3.md`, `-cross.md`) are removed
 in this consolidation; their content is fully represented below, grouped by the
 degradation each clause defends against, with each group's own numbering preserved
-(no ID collisions). **Total: 14 clauses**, within the sprint plan's 8-14 target range —
-no trimming or padding was applied; see the PR for this consolidation (issue #55) for the
+(no ID collisions). **Total: 14 clauses**, within the sprint plan's 8-14 target range.
+No trimming or padding was applied; see the PR for this consolidation (issue #55) for the
 full reasoning on count and on two cross-group overlaps identified during review
 (`MRFM-D1-1`/`MRFM-D3-1` and `MRFM-D1-2`/`MRFM-D3-1`+`MRFM-D3-3`), both kept as distinct
 clauses because they defend different degradations through different mechanisms, per that
@@ -33,7 +33,7 @@ PR's discussion.
 
 ---
 
-## Group D1 — Opacity
+## Group D1: Opacity
 
 Chain-of-thought or reasoning traces are never logged, or are logged but never disclosed
 to investigators (`docs/codebook.md` §2.1, channel C1). `docs/headline-metrics.md` M2
@@ -161,10 +161,10 @@ its own text, which sit outside the METR/GovAI scope this diff targets).
 
 ---
 
-## Group D2 — Unfaithfulness
+## Group D2: Unfaithfulness
 
 D2 (`docs/codebook.md` §2.3) is about whether a *disclosed* reasoning trace faithfully
-reports the computation that produced the action — distinct from D1, which is about
+reports the computation that produced the action, distinct from D1, which is about
 whether the trace exists or is disclosed at all. A lab can satisfy every D1-facing clause
 above and still produce an incident report that over-trusts an unfaithful self-report,
 which is the gap these three clauses target, drawn directly from a reliability failure in
@@ -309,7 +309,7 @@ sweep this diff targets.
 
 ---
 
-## Group D3 — Adversarial forgery
+## Group D3: Adversarial forgery
 
 Agent-writable channels (C1 raw chain-of-thought, C2 inter-agent message content, C3
 tool-call/action traces) may be forged, and the incident record documents this as
@@ -479,16 +479,16 @@ cross-check what agent-writable channels claim happened.
 
 ---
 
-## Group CROSS — Cross-cutting verifiability & process
+## Group CROSS: Cross-cutting verifiability & process
 
 D1, D2, and D3 are each about a specific way an *agent-generated* record can fail. The
-four clauses below are not about the agent's record at all — they are about whether the
+four clauses below are not about the agent's record at all; they are about whether the
 **institution's own reporting process** is verifiable: whether an assurance is checkable,
 whether a report's revision history is honest, whether a quoted excerpt is actually
 readable, and whether responsibility for retention has an owner when the agent's staging
 base wasn't the lab's own environment. A lab could satisfy every D1/D2/D3-facing clause
 above and still publish an unverifiable, silently-revised, image-only, ownerless-gap
-report — that is the space this group covers.
+report; that is the space this group covers.
 
 ### MRFM-CROSS-1: Verification procedure required for assurance claims
 
@@ -679,27 +679,27 @@ requirement outright, **4 of 14 STRENGTHEN** one (`MRFM-D1-1`, `MRFM-D3-1`, `MRF
 `MRFM-CROSS-2`, `MRFM-CROSS-3`, `MRFM-CROSS-4`).
 
 This is the opposite of the sprint plan's cautionary case. A clause table that came back
-mostly RESTATES would have meant the guidance already existed and the gap is enforcement —
+mostly RESTATES would have meant the guidance already existed and the gap is enforcement;
 that is *not* what this diff found, and that absence is itself the finding, not a
 scorecard win for the MRFM. METR's and GovAI's lists were written as general
 investigation-access and retention frameworks; MRFM's fourteen clauses were reverse-engineered
 from specific, evidenced gaps in this project's own 125-row claim ledger and its D1/D2/D3
 degradation analysis (`docs/headline-metrics.md`) against one particular incident. Where the
-two genuinely overlap — logging agent-writable channels (GovAI's "Activity logs" item, behind
-`MRFM-D3-1`/`MRFM-D3-2`) and disclosing what an investigation's redactions limit (METR's
-"Redaction summary / disclosure" item, behind `MRFM-CROSS-1`), plus the general reasoning-trace
-retention ask behind `MRFM-D1-1` — MRFM STRENGTHENS the prior ask by adding a specific
+two genuinely overlap (logging agent-writable channels, GovAI's "Activity logs" item, behind
+`MRFM-D3-1`/`MRFM-D3-2`, and disclosing what an investigation's redactions limit, METR's
+"Redaction summary / disclosure" item, behind `MRFM-CROSS-1`, plus the general reasoning-trace
+retention ask behind `MRFM-D1-1`), MRFM STRENGTHENS the prior ask by adding a specific
 integrity or verification mechanism (hash-chaining, signing, per-claim procedure disclosure,
 contemporaneous flagging) that neither source specifies on its own. But whole regions of the
 table have no real prior-art analogue at all: every D2 clause (self-report corroboration,
-provenance labeling, faithfulness-measurement disclosure — a report-writing epistemics
+provenance labeling, faithfulness-measurement disclosure, a report-writing epistemics
 question neither source addresses) and three of the four CROSS clauses (revision-changelog
 integrity, machine-readable quotation, third-party-compute retention ownership) sit entirely
 outside what either framework was written to cover.
 
 Read together, this suggests METR's and GovAI's frameworks are necessary but not sufficient
 for the failure modes this specific incident exposed. Where MRFM does sit on an existing
-foundation, the addition is a verification mechanism, not a restatement — so even the
+foundation, the addition is a verification mechanism, not a restatement, so even the
 STRENGTHENS rows are evidence that the underlying ask existed but wasn't independently
 checkable. And where MRFM is NEW, that's not this project inventing requirements for their
 own sake: it's a plain reading of what a 125-row incident ledger surfaced that two of the
@@ -720,7 +720,7 @@ establish.
 
 - **Adoptability.** No lab was asked whether any of these 14 clauses is operationally
   feasible, and no cost-band estimate above (Low/Medium/High) was validated against an
-  actual engineering team's estimate — each is this project's own reasoned guess, not a
+  actual engineering team's estimate. Each is this project's own reasoned guess, not a
   quote from anyone who would have to implement it. A clause with a "Low" cost band could
   still be organizationally expensive for reasons this document has no visibility into
   (legal review, competing roadmap priorities, existing tooling that doesn't fit the
@@ -737,8 +737,8 @@ establish.
   strength (every clause traces to a specific, evidenced gap rather than a generic
   wish-list), but it is also a limitation: a different incident, a different lab's
   architecture, or a different class of agent deployment could easily expose gaps these
-  14 clauses don't cover, and nothing here tests whether 14 clauses is enough in general
-  — only that these 14 answer what this one incident's public record showed.
+  14 clauses don't cover, and nothing here tests whether 14 clauses is enough in general;
+  only that these 14 answer what this one incident's public record showed.
 - **Enforceability.** Nothing in this document addresses who would require labs to adopt
   MRFM, what the consequence of non-adoption would be, or how a clause's satisfaction
   would be adjudicated in a contested case. This is a proposed evidentiary content
@@ -753,7 +753,7 @@ establish.
 
 - Actually circulating the clause table to one or more labs (or to people who have worked
   inside a lab's safety/security org) and recording whether they consider each clause
-  adoptable, and at what estimated cost — replacing this document's own cost-band guesses
+  adoptable, and at what estimated cost, replacing this document's own cost-band guesses
   with real ones.
 - A dedicated red-teaming pass against the "Evidence required" and "Verifier" fields of
   each clause: for each one, an adversarial attempt to construct a scenario that satisfies
@@ -761,8 +761,8 @@ establish.
   provide, then revising the clause text to close the gap found.
 - Expanding past the current 8-14 clause range by piloting MRFM-style disclosure against a
   second, independent incident (real or a constructed red-team scenario) to see which
-  clauses generalize unchanged, which need reformulation, and which gaps remain uncovered
-  — rather than relying on a single incident's ledger as the only source of evidenced
+  clauses generalize unchanged, which need reformulation, and which gaps remain uncovered,
+  rather than relying on a single incident's ledger as the only source of evidenced
   gaps.
 - A structured comparison against a wider set of prior-art frameworks than the two
   (METR, GovAI) diffed in P2.2, to check whether the "10 of 14 NEW" finding holds up
