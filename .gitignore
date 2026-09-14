@@ -2,6 +2,7 @@
 .claude
 .codex
 .cursor
+.agents
 
 # Tool/editor directories
 .zed
